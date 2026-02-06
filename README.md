@@ -79,7 +79,7 @@
 #### 1️⃣ Clonar el Repositorio
 
 ```bash
-git clone https://github.com/yourusername/GSIS-CLI.git
+git clone https://github.com/LeoDev2p/GSIS-CLI.git
 cd GSIS-CLI
 ```
 

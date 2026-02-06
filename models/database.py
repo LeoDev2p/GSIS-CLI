@@ -1,38 +1,54 @@
-
 from core import config, Exceptions
 from core.logger import get_logger
 import sqlite3
 
-log = get_logger ('DATABASE')
+log = get_logger("DATABASE")
 
-def conectionDB (query, *args, select = False):
+
+def conectionDB(query, *args, select=False):
+    """Ejecuta query SQL con prevención de SQL injection.
+    
+    Args:
+        query: Query SQL con placeholders (?).
+        *args: Parámetros de la query.
+        select: True para SELECT, False para INSERT/UPDATE/DELETE.
+    
+    Returns:
+        list si select=True, bool si exitoso.
+    
+    Raises:
+        DataBaseError: Error de SQLite.
+        InvalidParameterCountError: Parámetros incorrectos.
+        RestrictionError: Violación de constraint.
+    """
     try:
-        with sqlite3.connect (config.ROOT_DB) as conn:
+        with sqlite3.connect(config.ROOT_DB) as conn:
             conn.execute("PRAGMA foreign_keys = ON;")
-            cursor = conn.cursor ()
+            cursor = conn.cursor()
 
-            cursor.execute (query, args)
+            cursor.execute(query, args)
             if select:
-                return cursor.fetchall ()
-            
-            conn.commit ()
+                return cursor.fetchall()
+
+            conn.commit()
 
     except sqlite3.OperationalError as sql_O:
-        log.error (f"Error en la base de datos {sql_O}")
-        raise Exceptions.DataBaseError (str(sql_O))
+        log.error(f"Error en la base de datos {sql_O}")
+        raise Exceptions.DataBaseError(str(sql_O))
     except sqlite3.ProgrammingError as sql_P:
-        log.error (f"incorrect number of bindings supplied {sql_P}")
-        raise Exceptions.InvalidParameterCountError (str(sql_P))
+        log.error(f"incorrect number of bindings supplied {sql_P}")
+        raise Exceptions.InvalidParameterCountError(str(sql_P))
     except sqlite3.IntegrityError as sql_I:
-        log.error (f" CHECK constraint failed {sql_I}")
-        Exceptions.RestrictionError (str(sql_I))
+        log.error(f" CHECK constraint failed {sql_I}")
+        raise Exceptions.RestrictionError(str(sql_I))
 
     return True
+
 
 class CreateTable:
 
     @staticmethod
-    def createTableSafe ():
+    def createTableSafe():
         query = """
             CREATE TABLE IF NOT EXISTS safe (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -51,12 +67,12 @@ class CreateTable:
             ) 
         """
 
-        result = conectionDB (query)
+        result = conectionDB(query)
         if result is None:
-            log.info ("Safe table successfully created")
+            log.info("Safe table successfully created")
 
     @staticmethod
-    def creatTablecategory ():
+    def creatTablecategory():
         query = """
             CREATE TABLE IF NOT EXISTS categorySafe (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,7 +80,6 @@ class CreateTable:
             )
         """
 
-        result = conectionDB (query)
+        result = conectionDB(query)
         if result is None:
-            log.info ("Category table successfully created")
-
+            log.info("Category table successfully created")
