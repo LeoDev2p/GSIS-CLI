@@ -2,8 +2,9 @@
 from models.database import CreateTable
 from models.category_models import QueryCatgory
 from core.Exceptions import DataBaseError, CategoryError, UrlError, RowError
-from utils.view_utils import date_today
+from utils.utils import date_today
 from utils.validation import valitacion_email, validacion_link, validate_date
+from security.encryption import CipherManager
 import pdb
 
 def Createtables ():
@@ -17,18 +18,23 @@ def Savecategory (category):
 
 
 @valitacion_email
-def SaveSafe (db_safe, *args): # posible errror por *args en decorador
+def SaveSafe (db_safe, *args): 
     site_name, category, url, username, email, password, expiry_days, security_level = args
     if not validacion_link (url):
         raise UrlError ("incorrect url")
     
-    id_category = QueryCatgory._SQL_select (category)
+    date = date_today ()
+    id_category = QueryCatgory._SQL_select (category)[0][0]
     if not id_category:
         raise CategoryError ("category does not exist")
-    
-    date = date_today ()
 
-    db_safe._SQL_insert (site_name, id_category, url, username, email, password, date, expiry_days, security_level)
+    encrypt = []
+    for k in (username, email, password):
+        encrypt.append (CipherManager.Encypt_data (k))
+    
+    combined = [site_name, id_category, url, encrypt[0], encrypt[1], encrypt[2], date, expiry_days, security_level]
+
+    db_safe._SQL_insert (*combined)
     
     return True
 
@@ -37,7 +43,8 @@ def UpdateDataSafe (db_safe, params):
     last_change = date_today ()
     id = GETSitename (db_safe, username)[0][0]
 
-    db_safe._SQL_update (username, password, last_change, expiry_days, security_level, id)
+    encrypt = [CipherManager.Decrypt_data (k)  for k in (username, password)]
+    db_safe._SQL_update (encrypt[0], encrypt[1], last_change, expiry_days, security_level, id)
 
 def DeleteDataSafe (db_safe, id):
     db_safe._SQL_delete (id)
@@ -57,24 +64,31 @@ def GetId (db_safe, id):
 def GETSitename (db_safe, username):
     data = db_safe._SQL_filterBySitename (username)
 
-    return __validatedata (data, username)
+    new_data = controlls_decrypt (data)
+
+    return __validatedata (new_data, username)
 
 
 def GetEverything (db_safe):
     data = db_safe._SQL_select ()
     if not data:
-        raise DataBaseError ("Base de datos sin registro.", 1070)
+        raise DataBaseError ("Database without registration.", 1070)
     
-    return data
+    new_data = controlls_decrypt (data)
+    
+    return new_data
 
 def GetdataCategory (db_safe, category):
     id = QueryCatgory._SQL_select (category)
-    data = db_safe._SQL_filterBycategory (id)
-    return __validatedata (data, category)
+    print (f"[DEBUG] {id}")
+    data = db_safe._SQL_filterBycategory (id[0][0])
+    new_data = controlls_decrypt (data)
+    return __validatedata (new_data, category)
 
 def GetdataLastchange (db_safe, year, month):
     data = db_safe._SQL_filterBylastChange (year, month)
-    return __validatedata (data, month)
+    new_data = controlls_decrypt (data)
+    return __validatedata (new_data, month)
 
 
 def GetdataRange_Lastchange (db_safe, date1, date2):
@@ -82,6 +96,16 @@ def GetdataRange_Lastchange (db_safe, date1, date2):
         normalize = [x.replace ("/", "-") for x in (date1, date2)]
 
         data = db_safe._SQL_filterRangeLastChange (normalize[0], normalize[1])
-        return __validatedata (data, date1)
+        new_data = controlls_decrypt (data)
+        return __validatedata (new_data, date1)
 
+# ---
+def controlls_decrypt (data):
+    new_data = []
+    for row in range (len(data)):
+        new_data.append ([r for r in data[row][:3]])
+        new_data[row].append (CipherManager.Decrypt_data (data[row][3]))
 
+        if len (data[row]) > 4:
+            new_data[row].append (data[row][4])
+    return new_data

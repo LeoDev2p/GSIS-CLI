@@ -1,6 +1,7 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+from argon2 import PasswordHasher
 
 # Raiz base del proyecto
 BASE_DIR = Path (__file__).resolve ().parent.parent
@@ -16,5 +17,10 @@ LOG_FILE = BASE_DIR / "log" / 'security.log'
 
 SUPERUSER = os.getenv ("SUPERUSER")
 MASTER_KEY = os.getenv ("MASTER_KEY")
+
+SECRET_KEY_FERNET = os.getenv ("SECRET_KEY_FERNET")
+
+# config Argon2
+ARGON2_SETTING = PasswordHasher (time_cost=3, memory_cost=65536, parallelism=2)
 
 

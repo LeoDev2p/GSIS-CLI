@@ -13,8 +13,8 @@ class QueryCatgory:
         """
 
         result = conectionDB (query, id)
-        if result is None:
-            log.info ("Nueva categoria agregada cone éxito")
+        if result:
+            log.info ("New category added successfully")
 
     # Traendo el ID de la categoria especifica
     @staticmethod
@@ -23,7 +23,7 @@ class QueryCatgory:
             SELECT id FROM categorysafe
             WHERE name = ?
         """
-        return conectionDB (query, category, select=True)[0][0]
+        return conectionDB (query, category, select=True)
 
     # actualizacion de la tabla categoria
     @staticmethod
@@ -36,7 +36,7 @@ class QueryCatgory:
 
         result = conectionDB (query, name, id)
         if result:
-            log.info (f"categoria {name} actualziada con éxito")
+            log.info (f"Category {name} successfully updated")
     
     # eliminacion de elemento de la tabla categoria
     @staticmethod
@@ -48,4 +48,4 @@ class QueryCatgory:
 
         result = conectionDB (query, id)
         if result:
-            log.info (f"Categoria id: {id} elimina con éxito")
+            log.info (f"Category id: {id} deleted successfully")

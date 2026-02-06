@@ -13,13 +13,14 @@ class QuerySafe:
         """
         result = conectionDB (query, *args)
         if result:
-            log.info ("Datos insertados a la tabla Safe con exito")
+            log.info ("Data successfully inserted into the Safe table")
 
     
     # seleccionar todos los datos
     def _SQL_select (self):
         query = """
-            SELECT * FROM safe
+            SELECT s.id, c.name, s.site_name, s.email, s.expiry_days FROM safe s
+            JOIN categorySafe c ON s.id_category = c.id
         """
 
         return conectionDB (query, select=True)
@@ -34,7 +35,7 @@ class QuerySafe:
 
         result = conectionDB (query, *args)
         if result:
-            log.info (f"Se actualizo correctamente los datos de {args[0]}")
+            log.info (f"Data successfully updated for id: {args[0]}")
     
     # eliminar datos sensible
     def _SQL_delete (self, id):
@@ -45,7 +46,7 @@ class QuerySafe:
 
         result = conectionDB (query, id)
         if result:
-            log.info (f"Se elimino id: {id}, de la base de datos")
+            log.info (f"Deleted id: {id}, from the database")
     
     # filtrar por id
     def _SQL_filterById (self, id):

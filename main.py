@@ -1,25 +1,38 @@
 from views.app import Views, Filters
 from controllers.Database_controllers import *
 from controllers.Auth_controller import login
-from core.Exceptions import AuthError, DataBaseError, CategoryError, InvalidParameterCountError, UrlError, RestrictionError
-from utils.view_utils import Clearconsole, progress_bar
+from core.Exceptions import AuthError, DataBaseError, CategoryError, InvalidParameterCountError, UrlError, RestrictionError, PasswordMismatchError, HashCorruptionError
+from utils.utils import Clearconsole, progress_bar
 from models.safe_models import QuerySafe 
+from cryptography.fernet import InvalidToken
 import time
 
 import pdb
 
 class orquestador:
     def __init__(self, view, db_safe):
+        self.status = False
         self.view = view
         self.db_safe = db_safe
-        # self.view.Banner ()
-        # credentials = self.view.inputCredentials ()
-        # try:
-        #     if login (credentials[0], credentials[1]):
-        #         progress_bar ()
-        #         self.view.show_message ("Successful login")
-        # except AuthError as a:
-        #     print (f"Error {a.code}: {a}")
+        self.result_query = None
+
+        self.view_login ()
+
+    def view_login (self):
+        while True:
+            Clearconsole ()
+            self.view.Banner ()
+            credentials = self.view.inputCredentials ()
+            try:
+                if login (credentials[0], credentials[1]):
+                    progress_bar ()
+                    self.view.show_message ("Successful login")
+                    self.status = True
+                    break
+            except (AuthError, PasswordMismatchError, HashCorruptionError) as a:
+                self.view.show_error (a)
+                if self.view.ask ("Do you want to go out? Y/N") == "N":
+                    break
         
     def run (self):
         # Limpiamos la consola
@@ -60,15 +73,15 @@ class orquestador:
                         data = self.view.formInsert ()
                         try:
                             SaveSafe (self.db_safe, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7])
+                            progress_bar ()
+                            self.view.show_message ("Data successfully insert")
                         except (CategoryError, InvalidParameterCountError, DataBaseError, UrlError, AuthError) as e:
                             self.view.show_error (e)
-                        else: 
-                            progress_bar ()
-                            self.view.show_message ("Data successfully updated")
-                            if self.view.ask () == "N":
-                                break
+                            
+                        if self.view.ask () == "N":
+                            break
                         
-                        finally: time.sleep (1)
+                        time.sleep (1)
 
                 case 4:
                     self.filters ()
@@ -78,7 +91,7 @@ class orquestador:
                     try:
                         results = GETSitename (self.db_safe, data[0])
                         if results:
-                            # mostrar datos antes de actualizar
+                            # mostrar datos antes de actualiza
                             self.view.show_data (results)
                             if self.view.ask () == "S":
                                 UpdateDataSafe (self.db_safe, data)
@@ -122,11 +135,16 @@ class orquestador:
             option = self.view.inputOption ()
             match option:
                 case 1:
-                    #Funcion de mostrar tdos los daos
                     try:
                         results = GetEverything (self.db_safe)
-                    except DataBaseError as dbError:
+                        self.view.show_message ("consulting data")
+                        progress_bar ()
+                        Filters.show_dataFilter (results, title = "CATEGORY SEARCH")
+                    except (DataBaseError, InvalidToken) as dbError:
                         self.view.show_error (dbError)
+                    
+                    if self.view.ask () == "S":
+                        continue
                 case 2:
                     username = self.view.formSitename ()
                     try:
@@ -147,7 +165,7 @@ class orquestador:
                         self.view.show_message ("consulting data")
                         progress_bar ()
                         Filters.show_dataFilter (results, title = "CATEGORY SEARCH")
-                    except RowError as re:
+                    except (RowError, InvalidParameterCountError) as re:
                         self.view.show_error (re)
 
                     if self.view.ask () == "N":
@@ -192,6 +210,5 @@ if __name__ == '__main__':
     view = Views ()
     db_safe = QuerySafe ()
     data = orquestador (view, db_safe)
-    data.run ()
-
-    # controller = Getdata (db_safe, 1)
+    if data.status:
+        data.run ()

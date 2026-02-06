@@ -19,7 +19,8 @@ lengthText = lambda lista, index: max (list (map (lambda x: len(x[index]), lista
 
 def progress_bar():
     # El '\r' y el 'end=""' son los que fuerzan la actualización en la misma línea
+    print ()
     for i in range(101):
         print(f"\r[{'#'*(i//2):<50}] {i}%", end="", flush=True)
-        time.sleep(0.05)
+        time.sleep(0.03)
     print("\n")

@@ -1,1 +1,12 @@
 .env
+.venv/
+venv/
+env/
+
+prueba.py
+
+db/Secure.db
+log/security.log
+
+**/__pycache__
+**/*.pyc

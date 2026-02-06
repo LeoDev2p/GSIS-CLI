@@ -1,5 +1,4 @@
-from utils.view_utils import lengthText
-from math import ceil
+from utils.utils import lengthText
 
 class Views:
     def __init__(self):
@@ -43,7 +42,7 @@ class Views:
         try:
             option = int (input ("[Option]: "))
         except ValueError as v:
-            return f"Error tipo de dato:  {v}"
+            return f"Data type error:  {v}"
 
         else: return option
 
@@ -97,8 +96,8 @@ class Views:
         return category
 
     @staticmethod
-    def ask ():
-        value = input ("\nDo you want to continue [S/N]: ").upper ()
+    def ask (message = "Do you want to continue [S/N]"):
+        value = input (f"\n{message}: ").upper ()
         return value
 
     @staticmethod
@@ -107,22 +106,28 @@ class Views:
     
     @staticmethod
     def show_error (message):
-        if message.code:
-            print (f"Error {message.code}: {str(message)}\n")
-        else:
+        try:
+            if message.code:
+                print (f"Error {message.code}: {str(message)}\n")
+            else:
+                print (f"Error: {message}\n")
+        except AttributeError as at:
             print (f"Error: {message}\n")
+            
     
     @staticmethod
-    def show_data (row_data, title = "RESULTADOS"):
+    def show_data (row_data, title = "RESULTS"):
         len_category, len_siteweb, len_email = lengthText (row_data, 1), lengthText (row_data, 2), lengthText (row_data, 3)
         total = 19 + len_category + len_siteweb + len_email
+
+        len_category = len_category if len_category >= len ('category') else len ('category')
 
         print (" " + "-"*(total-1))
         print ("|" + f"{title.center (total-1, " ")}" + "|")
         print (" " + "-"*(total-1))
         print (f"| Id | {'Category':^{len_category}} | {'Site Web':^{len_siteweb}} | {'Email':^{len_email}} |")
 
-        len_category = len_category if len_category >= len ('category') else len ('category')
+
         for row in range (len (row_data)):
             print (f"| {row_data[row][0]:02d} | {row_data[row][1]:^{len_category}} | {row_data[row][2]:^{len_siteweb}} | {row_data[row][3]:^{len_email}} |")
             # for item in row_data[row]:
@@ -134,17 +139,16 @@ class Filters:
     @staticmethod
     def Menu_filter ():
         print ("""
-        [1] Traer todo
-        [2] Filtrar por nombre de sitio
-        [3] Filtrar por categoria
-        [4] Filtrar por año y mes
-        [5] Filtrar por rango de fecha de modificacion
+        [1] Bring everything
+        [2] Filter by site name
+        [3] Filter by category
+        [4] Filter by year and month
+        [5] Filter by date range of modification
         [6] Exit
         """)
     
     @staticmethod
-    def show_dataFilter (row_data, title = "RESULTADOS"):
-        # print (f"[DEBUG]: {row_data}")
+    def show_dataFilter (row_data, title = "RESULTS"):
         len_category, len_siteweb, len_email = lengthText (row_data, 1), lengthText (row_data, 2), lengthText (row_data, 3)
         len_expiry = len ('Expiry days')
 

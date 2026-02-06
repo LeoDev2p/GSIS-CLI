@@ -53,7 +53,7 @@ class CreateTable:
 
         result = conectionDB (query)
         if result is None:
-            log.info ("Tabla Safe creada con exito")
+            log.info ("Safe table successfully created")
 
     @staticmethod
     def creatTablecategory ():
@@ -66,5 +66,5 @@ class CreateTable:
 
         result = conectionDB (query)
         if result is None:
-            log.info ("Rabla Category creada con exito")
+            log.info ("Category table successfully created")
 

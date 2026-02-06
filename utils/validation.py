@@ -6,7 +6,6 @@ def valitacion_email (func):
     @wraps (func)
     def wrappers (*args, **kwargs):
         email = args[5] if len (args) > 2 else args [0]
-        print (f"[DEBUG]: {email}")
         if not re.findall (r"\b[a-zA-Z0-9._]+@[a-z]+\.(?:[a-z]+|[a-z]+\.[a-z]+)\b", email):
             raise AuthError (2060)
         

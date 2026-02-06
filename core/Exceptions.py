@@ -8,13 +8,13 @@ class DataBaseError (Exception):
     def Error (self):
         match self.code:
             case 1050:
-                return "Intentas crear una tabla con un nombre que ya se está usando."
+                return "You are trying to create a table with a name that is already in use."
             case 1054:
-                return "Intentas referenciar una columna que no existe en la tabla especificada."
+                return "You are trying to reference a column that does not exist in the specified table."
             case 1064:
-                return "Hay un error tipográfico, una coma faltante o una palabra clave SQL mal escrita."
+                return "There is a typo, a missing comma, or a misspelled SQL keyword."
             case 1070:
-                return "Base de datos sin registro."
+                return "Database without registration."
 
 # Campo con restriccion check
 class RestrictionError (DataBaseError):
@@ -45,13 +45,22 @@ class AuthError (Exception):
     def Error (self):
         match self.code:
             case 2040:
-                return "Usuario incorrecto"
+                return "Incorrect user"
             case 2050:
-                return "Contraseña incorrecta"
+                return "Incorrect password"
             case 2060:
-                return "Email invalido"
+                return "Invalid email"
+            
+class PasswordMismatchError (AuthError):
+    def __init__(self, message, code = 0):
+        super().__init__(message)
+
+class HashCorruptionError (AuthError):
+    def __init__(self, message, code=0):
+        super().__init__(message)
 
 # url incorrecta
 class UrlError (Exception):
     def __init__(self, message):
         super().__init__(message)
+
