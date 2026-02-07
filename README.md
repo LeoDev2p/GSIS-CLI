@@ -13,6 +13,7 @@
 
 [Características](#características) • [Instalación](#instalación) • [Uso](#uso) • [Seguridad](#seguridad) • [Documentación](#documentación)
 
+
 </div>
 
 ---
@@ -30,8 +31,9 @@
 - **📊 Gestión Inteligente**: Organiza tus contraseñas por categorías con fechas de expiración
 - **🔍 Búsquedas Avanzadas**: Múltiples filtros para encontrar tus credenciales rápidamente
 - **📝 Registro Completo**: Sistema de logging para auditoría y debugging
-- **🧪 Testing Completo**: Suite de pruebas con pytest para máxima confiabilidad
+- **📝 Registro Completo**: Sistema de logging para auditoría y debugging
 - **💻 Interfaz Intuitiva**: CLI moderna y fácil de usar
+
 
 ---
 
@@ -45,7 +47,6 @@
 - **Cifrado Fernet (AES-256)**: Cifrado simétrico de última generación sin almacenamiento persistente de llaves
 - **Protección Anti-Fuerza Bruta**: Sistema de intentos fallidos que elimina automáticamente la base de datos después de 3 intentos incorrectos
 - **Validación de Contraseñas**: Verificación de integridad mediante hashes
-- **Testing Completo**: Suite de pruebas con pytest para garantizar la robustez del sistema
 
 ### 📂 Gestión de Datos
 
@@ -285,7 +286,8 @@ Confirm deletion? (S/N): S
 | **Protección Anti-Brute Force** | Sistema de Intentos | Eliminación automática de BD tras 3 intentos fallidos |
 | **Base de Datos** | SQLite | Almacenamiento local |
 | **Logging** | Python logging | Registro de operaciones |
-| **Testing** | pytest | Suite de pruebas automatizadas |
+| **Logging** | Python logging | Registro de operaciones |
+
 
 ### Buenas Prácticas Implementadas
 
@@ -298,7 +300,8 @@ Confirm deletion? (S/N): S
 ✅ **Manejo de Excepciones**: Sistema robusto de errores personalizados  
 ✅ **Logging Seguro**: No se registran datos sensibles en logs  
 ✅ **Arquitectura Modular**: Separación de responsabilidades (MVC)  
-✅ **Testing Automatizado**: Cobertura de pruebas con pytest
+✅ **Arquitectura Modular**: Separación de responsabilidades (MVC)
+
 
 ### Recomendaciones de Seguridad
 
@@ -316,6 +319,7 @@ GSIS-CLI/
 │
 ├── 📄 main.py                          # Punto de entrada de la aplicación
 ├── 📄 requirements.txt                 # Dependencias del proyecto
+├── 📄 requirements-dev.txt             # Dependencias de desarrollo del proyecto
 ├── 📄 .env                             # Variables de entorno (NO compartir)
 ├── 📄 .gitignore                       # Archivos ignorados por Git
 ├── 📄 README.md                        # Este archivo
@@ -353,37 +357,6 @@ GSIS-CLI/
 
 ---
 
-## 🧪 Testing y Desarrollo
-
-### Suite de Pruebas con pytest
-
-El proyecto incluye una suite completa de pruebas automatizadas para garantizar la calidad y robustez del código.
-
-#### Ejecutar Pruebas
-
-```bash
-# Instalar dependencias de desarrollo
-pip install -r requirements-dev.txt
-
-# Ejecutar todas las pruebas
-pytest
-
-# Ejecutar con cobertura detallada
-pytest --cov=. --cov-report=html
-
-# Ejecutar pruebas específicas
-pytest test/test_dbcontroller.py -v
-```
-
-#### Áreas de Cobertura
-
-- ✅ **Seguridad**: Pruebas de hashing, cifrado y derivación de llaves
-- ✅ **Base de Datos**: Operaciones CRUD y validaciones
-- ✅ **Autenticación**: Sistema de login y protección contra ataques
-- ✅ **Controladores**: Lógica de negocio y manejo de errores
-- ✅ **Validaciones**: Sistema de validación de datos
-
----
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -392,7 +365,8 @@ pytest test/test_dbcontroller.py -v
 - **[Cryptography](https://cryptography.io/)** - Cifrado Fernet (AES-256) y PBKDF2
 - **[SQLite](https://www.sqlite.org/)** - Base de datos embebida
 - **[python-dotenv](https://pypi.org/project/python-dotenv/)** - Manejo de variables de entorno
-- **[pytest](https://pytest.org/)** - Framework de testing automatizado
+- **[python-dotenv](https://pypi.org/project/python-dotenv/)** - Manejo de variables de entorno
+
 
 ---
 
@@ -453,18 +427,10 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para má
 
 ---
 
-## 🙏 Agradecimientos
-
-- A la comunidad de Python por las excelentes librerías de seguridad
-- A todos los contribuidores y usuarios de GSIS-CLI
-- Inspirado en las mejores prácticas de gestión de credenciales
-
----
-
 <div align="center">
 
 **⭐ Si te resulta útil este proyecto, considera darle una estrella en GitHub ⭐**
 
-Hecho con ❤️ por Kriptom Development
+LeoDev2p Development
 
 </div>

@@ -23,15 +23,18 @@ def valitacion_email(func):
     """
     @wraps(func)
     def wrappers(*args, **kwargs):
+        # Localizamos el email
         email = args[5] if len(args) > 2 else args[0]
-        print (f"[DEBUG]: {email}")
-        if not re.findall(
-            r"\b[a-zA-Z0-9._]+@[a-z]+\.(?:[a-z]+|[a-z]+\.[a-z]+)\b", email
-        ):
-            raise AuthError(2060)
-
+        
+        if not re.findall(r"\b[a-zA-Z0-9._]+@[a-z]+\.(?:[a-z]+|[a-z]+\.[a-z]+)\b", email):
+            from security.integrity import register_failed_attempt 
+            data = register_failed_attempt()
+            print (f"[DEBUG]: validation email {data}")
+            atp = data.get("attempts", 0)
+            
+            raise AuthError(2060, atp)
+            
         return func(*args, **kwargs)
-
     return wrappers
 
 

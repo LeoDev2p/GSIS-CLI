@@ -18,6 +18,7 @@ from core.Exceptions import (
     RestrictionError,
     PasswordMismatchError,
     HashCorruptionError,
+    SecurityError
 )
 from utils.utils import Clearconsole, progress_bar
 from models.safe_models import QuerySafe
@@ -44,16 +45,17 @@ class Orchestrator:
             self.view.Banner()
             credentials = self.view.inputCredentials()
             try:
-                success, self.session_password = login(credentials[0], credentials[1])
-                if success:
+                self.session_password = login(credentials[0], credentials[1])
+                if self.session_password:
                     progress_bar()
                     self.view.show_message("Successful login")
                     self.status = True
                     break
-            except (AuthError, PasswordMismatchError, HashCorruptionError) as a:
+            except (SecurityError, PasswordMismatchError, HashCorruptionError, AuthError, InvalidToken) as a:
                 self.view.show_error(a)
-                if self.view.ask("Do you want to go out? Y/N") == "N":
-                    break
+
+            if self.view.ask("Do you want to go out? Y/N") == "N":
+                break
 
     def run(self):
         """Function responsible for running the main loop of the application, handling user interactions, and coordinating database operations based on user input."""

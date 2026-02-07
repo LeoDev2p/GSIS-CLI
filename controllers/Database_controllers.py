@@ -25,7 +25,7 @@ def Savecategory(category):
 def delete_category(category):
     """Delete a category from the database based on the provided name."""
     id_category = QueryCatgory._SQL_select(category)[0][0]
-    print (f"ID category: {id_category}")
+
     if id_category:
         QueryCatgory._SQL_delete(id_category)
     else:
@@ -54,7 +54,7 @@ def SaveSafe(db_safe: object, *args: Any, master_password: str = ""):
         raise UrlError("incorrect url")
 
     date = date_today()
-    id_category = QueryCatgory._SQL_select(category)[0][0]
+    id_category = QueryCatgory._SQL_select(category)
     if not id_category:
         raise CategoryError("category does not exist")
 
@@ -62,7 +62,7 @@ def SaveSafe(db_safe: object, *args: Any, master_password: str = ""):
     for k in (username, email, password):
         encrypt.append(CipherManager.Encypt_data(k, master_password))
 
-    combined = [site_name, id_category, url, encrypt[0], encrypt[1], encrypt[2],
+    combined = [site_name, id_category[0][0], url, encrypt[0], encrypt[1], encrypt[2],
         date, expiry_days, security_level,
     ]
 

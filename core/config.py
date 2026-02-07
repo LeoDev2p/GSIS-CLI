@@ -23,15 +23,13 @@ MASTER_KEY = os.getenv("MASTER_KEY")
 MASTER_PASSWORD_HASH  = os.getenv("MASTER_KEY")
 SALT = os.getenv("SALT")
 
+SECRET_KEY_ATTEMPTS = os.getenv("SECRET_KEY_ATTEMPTS")
+
 # config Argon2
 ARGON2_SETTING = PasswordHasher(time_cost=3, memory_cost=65536, parallelism=2)
 
 #* Do not configure
 app_data = os.getenv('APPDATA') 
 secure_folder = os.path.join(app_data, "SystemCacheLogs")
-
-if not os.path.exists(secure_folder):
-    os.makedirs(secure_folder)
-
-JSON_PATH = os.path.join(secure_folder, "win_sys_32.dat")
+INTEGRETY_PATH = os.path.join(secure_folder, "win_sys_32.dat")
 

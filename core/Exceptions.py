@@ -51,8 +51,9 @@ class RowError(DataBaseError):
 # error de autenticacion
 class AuthError(Exception):
     """Handling authtntication errors."""
-    def __init__(self, code=0):
+    def __init__(self, code=0, attempts = 0):
         self.code = code
+        self.attempts = attempts
         super().__init__(self.Error())
 
     def Error(self):
@@ -61,22 +62,25 @@ class AuthError(Exception):
             case 2040:
                 return "Incorrect user"
             case 2050:
-                return "Incorrect password"
+                return f"Incorrect password. Failed {self.attempts}/3 attempts and the database will be deleted."
             case 2060:
-                return "Invalid email"
+                return f"Invalid email. Failed {self.attempts}/3 attempts and the database will be deleted."
 
 
 class PasswordMismatchError(AuthError):
     """Handling errors related to a password mismatch during authentication."""
-    def __init__(self, message, code=0):
+    def __init__(self, message):
         super().__init__(message)
 
 
 class HashCorruptionError(AuthError):
     """Handling errors related to hash corruption during authentication."""
-    def __init__(self, message, code=0):
+    def __init__(self, message):
         super().__init__(message)
 
+class SecurityError(AuthError):
+    def __init__(self, message):
+        super().__init__(message)
 
 # url incorrecta
 class UrlError(Exception):

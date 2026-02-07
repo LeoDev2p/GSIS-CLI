@@ -3,7 +3,8 @@
 import base64
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken
+from cryptography.exceptions import InvalidKey
 from core.logger import get_logger
 from core.config import SALT
 
@@ -77,6 +78,6 @@ class CipherManager:
             
             decrypted = f.decrypt(data).decode("utf-8")
             return int(decrypted) if decrypted.isdigit() else decrypted
-        except Exception as e:
+        except (InvalidToken, InvalidKey) as e:
             log.error(f"Decryption failed: {e}")
             raise e
