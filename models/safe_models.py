@@ -21,7 +21,7 @@ class QuerySafe:
     # seleccionar todos los datos
     def _SQL_select(self) -> list[tuple]:
         query = """
-            SELECT s.id, c.name, s.site_name, s.email, s.expiry_days FROM safe s
+            SELECT s.id, c.name, s.site_name, s.email, s.password, s.expiry_days FROM safe s
             JOIN categorySafe c ON s.id_category = c.id
         """
 
@@ -53,7 +53,7 @@ class QuerySafe:
     # filtrar por id
     def _SQL_filterById(self, id) -> list[tuple]:
         query = """
-            SELECT s.id, c.name, s.site_name, s.email FROM categorySafe c
+            SELECT s.id, c.name, s.site_name, s.email, s.password FROM categorySafe c
             JOIN safe s ON c.id = s.id_category
             WHERE s.id = ?
         """
@@ -63,7 +63,7 @@ class QuerySafe:
     # filtrar por nombre de sitio
     def _SQL_filterBySitename(self, site_name) -> list[tuple]:
         query = """
-            SELECT s.id, c.name, s.site_name, s.email FROM categorySafe c
+            SELECT s.id, c.name, s.site_name, s.email, s.password FROM categorySafe c
             JOIN safe s ON c.id = s.id_category
             WHERE s.site_name = ?
         """
@@ -73,7 +73,7 @@ class QuerySafe:
     # filtrar por id de categoria
     def _SQL_filterBycategory(self, id_category) -> list[tuple]:
         query = """
-            SELECT s.id, c.name, s.site_name, s.email, s.expiry_days from categorySafe c
+            SELECT s.id, c.name, s.site_name, s.email, s.password, s.expiry_days from categorySafe c
             JOIN safe s ON c.id = s.id_category
             WHERE c.id = ?
         """
@@ -83,7 +83,7 @@ class QuerySafe:
     # filtrar por año y mes de modificacion
     def _SQL_filterBylastChange(self, year, month=0) -> list[tuple]:
         query = """
-            SELECT s.id, c.name, s.site_name, s.email, s.expiry_days FROM safe s
+            SELECT s.id, c.name, s.site_name, s.email, s.password, s.expiry_days FROM safe s
             JOIN categorySafe c ON s.id_category = c.id
             WHERE CAST (strftime ('%Y', last_change) as INTEGER) = ? OR CAST (strftime ('%m', last_change) as INTEGER) = ?
         """
@@ -93,7 +93,7 @@ class QuerySafe:
     # filtrar por rango de fechas 'YYYY-MM-DD'
     def _SQL_filterRangeLastChange(self, date1: str, date2: str) -> list[tuple]:
         query = """
-            SELECT s.id, c.name, s.site_name, s.email, s.expiry_days FROM safe s
+            SELECT s.id, c.name, s.site_name, s.email, s.password, s.expiry_days FROM safe s
             JOIN categorySafe c ON s.id_category = c.id
             WHERE last_change BETWEEN ? AND ?
             """

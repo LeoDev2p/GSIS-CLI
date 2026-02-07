@@ -183,7 +183,7 @@ class Orchestrator:
                     except DataBaseError as db:
                         self.view.show_error(db)
                     finally:
-                        time.sleep(2)
+                        time.sleep(3)
 
                 case 7:
                     # delete data

@@ -84,9 +84,9 @@ def UpdateDataSafe(db_safe: object, params: tuple, master_password: str = "") ->
     """
     username, password, expiry_days, security_level = params
     last_change = date_today()
-    id = GETSitename(db_safe, username)[0][0]
+    id = GETSitename(db_safe, username, master_password)[0][0]
 
-    encrypt = [CipherManager.Decrypt_data(k, master_password) for k in (username, password)]
+    encrypt = [CipherManager.Encypt_data (k, master_password) for k in (username, password)]
     db_safe._SQL_update(
         encrypt[0], encrypt[1], last_change, expiry_days, security_level, id
     )
@@ -175,11 +175,12 @@ def controlls_decrypt(data: list[tuple], master_password: str = "") -> list[list
         current_row = list(row[:3])
         
         # DESENCRIPTAMOS usando la password REAL
-        decrypted_pass = CipherManager.Decrypt_data(row[3], master_password)
-        current_row.append(decrypted_pass)
+        for i in [3,4]:
+            decrypted_pass = CipherManager.Decrypt_data(row[i], master_password)
+            current_row.append(decrypted_pass)
 
-        if len(row) > 4:
-            current_row.append(row[4])
+        if len(row) > 5:
+            current_row.append(row[5])
             
         new_data.append(current_row)
     return new_data

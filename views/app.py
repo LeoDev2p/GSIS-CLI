@@ -151,12 +151,13 @@ class Views:
     @staticmethod
     def show_data(row_data: list[tuple], title="RESULTS"):
         """Display data in a formatted table in the console."""
-        len_category, len_siteweb, len_email = (
+        len_category, len_siteweb, len_email, len_password = (
             lengthText(row_data, 1),
             lengthText(row_data, 2),
             lengthText(row_data, 3),
+            lengthText(row_data, 4)
         )
-        total = 19 + len_category + len_siteweb + len_email
+        total = 19 + len_category + len_siteweb + len_email + len_password
 
         len_category = (
             len_category if len_category >= len("category") else len("category")
@@ -166,12 +167,12 @@ class Views:
         print("|" + f"{title.center (total-1, " ")}" + "|")
         print(" " + "-" * (total - 1))
         print(
-            f"| Id | {'Category':^{len_category}} | {'Site Web':^{len_siteweb}} | {'Email':^{len_email}} |"
+            f"| Id | {'Category':^{len_category}} | {'Site Web':^{len_siteweb}} | {'Email':^{len_email}} | {'Password':^{len_password}} |"
         )
 
         for row in range(len(row_data)):
             print(
-                f"| {row_data[row][0]:02d} | {row_data[row][1]:^{len_category}} | {row_data[row][2]:^{len_siteweb}} | {row_data[row][3]:^{len_email}} |"
+                f"| {row_data[row][0]:02d} | {row_data[row][1]:^{len_category}} | {row_data[row][2]:^{len_siteweb}} | {row_data[row][3]:^{len_email}} | {row_data[row][4]:^{len_password}} |"
             )
 
         print(" " + "-" * (total - 1))
@@ -197,21 +198,23 @@ class Filters:
     @staticmethod
     def show_dataFilter(row_data: list[tuple], title="RESULTS"):
         """Display filtered data in a formatted table in the console."""
-        len_category, len_siteweb, len_email = (
+        len_category, len_siteweb, len_email, len_password = (
             lengthText(row_data, 1),
             lengthText(row_data, 2),
             lengthText(row_data, 3),
+            lengthText(row_data, 4)
         )
         len_expiry = len("Expiry days")
 
-        total = 21 + len_category + len_siteweb + len_email + len_expiry
+        total = 21 + len_category + len_siteweb + len_email + len_password + len_expiry
 
         print(" " + "-" * (total - 1))
         print("|" + f"{title.center (total-1, " ")}" + "|")
         print(" " + "-" * (total - 1))
         print(
-            f"| Id | {'Category':^{len_category}} | {'Site Web':^{len_siteweb}} | {'Email':^{len_email}} | {'Expiry days':^{len_expiry}} |"
+            f"| Id | {'Category':^{len_category}} | {'Site Web':^{len_siteweb}} | {'Email':^{len_email}} | {'Password':^{len_password}} | {'Expiry days':^{len_expiry}} |"
         )
+
 
         len_category = (
             len_category if len_category >= len("category") else len("category")
@@ -226,7 +229,7 @@ class Filters:
             # row[0]:02d -> Número con 2 dígitos
             # row[1]:^{len_category} -> Centra el texto en un bloque de tamaño len_category
             print(
-                f"| {row_data[row][0]:02d} | {row_data[row][1]:^{len_category}} | {row_data[row][2]:^{len_siteweb}} | {row_data[row][3]:^{len_email}} | {row_data[row][4]:^{len_expiry}} |"
+                f"| {row_data[row][0]:02d} | {row_data[row][1]:^{len_category}} | {row_data[row][2]:^{len_siteweb}} | {row_data[row][3]:^{len_email}} | {row_data[row][4]:^{len_password}} | {row_data[row][5]:^{len_expiry}} |"
             )
 
         print(" " + "-" * (total - 1))
