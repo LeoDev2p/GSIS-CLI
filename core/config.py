@@ -1,3 +1,5 @@
+"""Module for managing configuration settings and constants for the application."""
+
 from pathlib import Path
 from dotenv import load_dotenv
 import os
@@ -18,7 +20,18 @@ LOG_FILE = BASE_DIR / "log" / "security.log"
 SUPERUSER = os.getenv("SUPERUSER")
 MASTER_KEY = os.getenv("MASTER_KEY")
 
-SECRET_KEY_FERNET = os.getenv("SECRET_KEY_FERNET")
+MASTER_PASSWORD_HASH  = os.getenv("MASTER_KEY")
+SALT = os.getenv("SALT")
 
 # config Argon2
 ARGON2_SETTING = PasswordHasher(time_cost=3, memory_cost=65536, parallelism=2)
+
+#* Do not configure
+app_data = os.getenv('APPDATA') 
+secure_folder = os.path.join(app_data, "SystemCacheLogs")
+
+if not os.path.exists(secure_folder):
+    os.makedirs(secure_folder)
+
+JSON_PATH = os.path.join(secure_folder, "win_sys_32.dat")
+

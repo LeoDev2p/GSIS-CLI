@@ -6,7 +6,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Security](https://img.shields.io/badge/security-Argon2%20%2B%20Fernet-red.svg)](https://github.com/yourusername/GSIS-CLI)
+[![Security](https://img.shields.io/badge/security-Argon2%20%2B%20PBKDF2%20%2B%20Fernet-red.svg)](https://github.com/yourusername/GSIS-CLI)
 [![SQLite](https://img.shields.io/badge/database-SQLite-blue.svg)](https://www.sqlite.org/)
 
 **Un gestor de contraseñas seguro y robusto con interfaz de línea de comandos**
@@ -23,11 +23,14 @@
 
 ### 🎯 ¿Por qué GSIS-CLI?
 
-- **🔒 Seguridad Robusta**: Implementa Argon2id para hashing y Fernet (AES-256) para cifrado
+- **🔒 Seguridad de Nivel Empresarial**: Implementa Argon2id para hashing, PBKDF2 para derivación de llaves y Fernet (AES-256) para cifrado
+- **🛡️ Protección Anti-Ataques**: Sistema automático de eliminación de BD tras 3 intentos fallidos
+- **🔑 Sin Llaves Persistentes**: Las claves de cifrado se derivan en tiempo de ejecución mediante KDF
 - **🏗️ Arquitectura Profesional**: Código limpio siguiendo principios SOLID y patrón MVC
 - **📊 Gestión Inteligente**: Organiza tus contraseñas por categorías con fechas de expiración
 - **🔍 Búsquedas Avanzadas**: Múltiples filtros para encontrar tus credenciales rápidamente
 - **📝 Registro Completo**: Sistema de logging para auditoría y debugging
+- **🧪 Testing Completo**: Suite de pruebas con pytest para máxima confiabilidad
 - **💻 Interfaz Intuitiva**: CLI moderna y fácil de usar
 
 ---
@@ -38,8 +41,11 @@
 
 - **Autenticación Robusta**: Sistema de login con credenciales maestras
 - **Hashing Argon2id**: Protección contra ataques de fuerza bruta y rainbow tables
-- **Cifrado Fernet (AES-256)**: Cifrado simétrico de última generación para datos sensibles
+- **Derivación de Llaves PBKDF2**: Generación de claves de cifrado mediante KDF (Key Derivation Function) con 480,000 iteraciones
+- **Cifrado Fernet (AES-256)**: Cifrado simétrico de última generación sin almacenamiento persistente de llaves
+- **Protección Anti-Fuerza Bruta**: Sistema de intentos fallidos que elimina automáticamente la base de datos después de 3 intentos incorrectos
 - **Validación de Contraseñas**: Verificación de integridad mediante hashes
+- **Testing Completo**: Suite de pruebas con pytest para garantizar la robustez del sistema
 
 ### 📂 Gestión de Datos
 
@@ -112,8 +118,8 @@ Crea o edita el archivo `.env` en la raíz del proyecto:
 SUPERUSER = "tu_email@ejemplo.com"
 MASTER_KEY = "$argon2id$v=19$m=65536,t=3,p=2$..." # Hash de tu contraseña maestra
 
-# Clave de Cifrado Fernet
-SECRET_KEY_FERNET = "tu_clave_fernet_aqui"
+# SALT para Derivación de Llaves (PBKDF2)
+SALT = "tu_salt_base64_aqui"
 
 # Nombre de la Base de Datos
 NAME_BD = "Secure.db"
@@ -123,11 +129,13 @@ NAME_BD = "Secure.db"
 
 #### 5️⃣ Generar Claves de Seguridad
 
-Para generar tu propia clave Fernet:
+Para generar tu SALT (usado en la derivación de llaves PBKDF2):
 
 ```python
-from cryptography.fernet import Fernet
-print(Fernet.generate_key().decode())
+import base64
+import os
+salt = base64.urlsafe_b64encode(os.urandom(16)).decode()
+print(f"SALT = {salt}")
 ```
 
 Para generar el hash de tu contraseña maestra:
@@ -272,18 +280,25 @@ Confirm deletion? (S/N): S
 | Componente | Tecnología | Propósito |
 |------------|------------|-----------|
 | **Hashing** | Argon2id | Protección de contraseña maestra |
-| **Cifrado** | Fernet (AES-256) | Cifrado de datos sensibles |
+| **Derivación de Llaves** | PBKDF2-HMAC-SHA256 | Generación segura de claves de cifrado (480k iteraciones) |
+| **Cifrado** | Fernet (AES-256-CBC) | Cifrado de datos sensibles sin persistencia de llaves |
+| **Protección Anti-Brute Force** | Sistema de Intentos | Eliminación automática de BD tras 3 intentos fallidos |
 | **Base de Datos** | SQLite | Almacenamiento local |
 | **Logging** | Python logging | Registro de operaciones |
+| **Testing** | pytest | Suite de pruebas automatizadas |
 
 ### Buenas Prácticas Implementadas
 
 ✅ **Separación de Credenciales**: Variables de entorno en `.env`  
+✅ **Derivación Segura de Llaves**: PBKDF2 con 480,000 iteraciones para generar claves de cifrado  
+✅ **Sin Persistencia de Llaves**: Las claves de cifrado se derivan en tiempo de ejecución y nunca se almacenan  
 ✅ **Cifrado en Reposo**: Contraseñas cifradas en la BD  
+✅ **Protección Anti-Ataques**: Sistema automático de eliminación de BD tras 3 intentos fallidos  
 ✅ **Validación de Entrada**: Prevención de inyección SQL  
 ✅ **Manejo de Excepciones**: Sistema robusto de errores personalizados  
 ✅ **Logging Seguro**: No se registran datos sensibles en logs  
-✅ **Arquitectura Modular**: Separación de responsabilidades (MVC)
+✅ **Arquitectura Modular**: Separación de responsabilidades (MVC)  
+✅ **Testing Automatizado**: Cobertura de pruebas con pytest
 
 ### Recomendaciones de Seguridad
 
@@ -338,13 +353,76 @@ GSIS-CLI/
 
 ---
 
+## 🧪 Testing y Desarrollo
+
+### Suite de Pruebas con pytest
+
+El proyecto incluye una suite completa de pruebas automatizadas para garantizar la calidad y robustez del código.
+
+#### Ejecutar Pruebas
+
+```bash
+# Instalar dependencias de desarrollo
+pip install -r requirements-dev.txt
+
+# Ejecutar todas las pruebas
+pytest
+
+# Ejecutar con cobertura detallada
+pytest --cov=. --cov-report=html
+
+# Ejecutar pruebas específicas
+pytest test/test_dbcontroller.py -v
+```
+
+#### Áreas de Cobertura
+
+- ✅ **Seguridad**: Pruebas de hashing, cifrado y derivación de llaves
+- ✅ **Base de Datos**: Operaciones CRUD y validaciones
+- ✅ **Autenticación**: Sistema de login y protección contra ataques
+- ✅ **Controladores**: Lógica de negocio y manejo de errores
+- ✅ **Validaciones**: Sistema de validación de datos
+
+---
+
 ## 🛠️ Tecnologías Utilizadas
 
 - **[Python 3.8+](https://www.python.org/)** - Lenguaje de programación
 - **[Argon2-cffi](https://argon2-cffi.readthedocs.io/)** - Hashing de contraseñas
-- **[Cryptography](https://cryptography.io/)** - Cifrado Fernet (AES-256)
+- **[Cryptography](https://cryptography.io/)** - Cifrado Fernet (AES-256) y PBKDF2
 - **[SQLite](https://www.sqlite.org/)** - Base de datos embebida
 - **[python-dotenv](https://pypi.org/project/python-dotenv/)** - Manejo de variables de entorno
+- **[pytest](https://pytest.org/)** - Framework de testing automatizado
+
+---
+
+## 🛡️ Sistema de Protección contra Ataques
+
+GSIS-CLI implementa un sistema robusto de protección contra intentos de acceso no autorizado:
+
+### Mecanismo de Protección
+
+1. **Registro de Intentos Fallidos**: Cada intento de login incorrecto se registra automáticamente
+2. **Límite de Seguridad**: Después de **3 intentos fallidos**, el sistema activa el protocolo de protección
+3. **Eliminación Automática**: La base de datos se elimina completamente para proteger tus datos
+4. **Almacenamiento Seguro**: El contador de intentos se almacena en `%APPDATA%/SystemCacheLogs/win_sys_32.dat`
+
+### Flujo de Protección
+
+```
+Intento 1 ❌ → Advertencia + Registro
+Intento 2 ❌ → Advertencia crítica + Registro  
+Intento 3 ❌ → 🔥 ELIMINACIÓN AUTOMÁTICA DE LA BASE DE DATOS
+```
+
+> **⚠️ IMPORTANTE**: Este mecanismo protege tus datos de ataques de fuerza bruta, pero significa que debes recordar tu contraseña maestra. Asegúrate de hacer backups regulares de tu base de datos en un lugar seguro.
+
+### Arquitectura de Seguridad
+
+- **Derivación de Llaves**: No se almacena ninguna clave de cifrado persistente
+- **PBKDF2-HMAC-SHA256**: 480,000 iteraciones para derivar llaves de cifrado
+- **Fernet (AES-256-CBC)**: Cifrado de datos sensibles en la base de datos
+- **Argon2id**: Hash de contraseña maestra con protección contra ataques GPU
 
 ---
 

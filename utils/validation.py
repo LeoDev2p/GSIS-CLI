@@ -1,27 +1,30 @@
+"""Module for validation functions, including email, URL, and date validation."""
+
 import re
 from functools import wraps
+
 from core.Exceptions import AuthError
 
 
 def valitacion_email(func):
-    """Valida que un argumento sea un email con formato correcto.
-    
-    Decorador que verifica si el quinto argumento (índice 5) o el primer
-    argumento (índice 0) de la función decorada es un email válido usando
-    expresiones regulares.
-    
+    """Validates that an argument is a correctly formatted email address.
+
+    Decorator that checks if the fifth argument (index 5) or the first argument (index 0) of the decorated function is 
+    a valid email address using regular expressions.
+
     Args:
-        func (callable): Función a decorar que recibe un email.
-    
+        func(callable): Function to be decorated that receives an email address.
+
     Returns:
-        callable: Función wrapper con validación de email.
-    
+        callable: Wrapper function with email validation.
+
     Raises:
-        AuthError: Si el email no tiene formato válido (código 2060).
+        AuthError: If the email address is not in a valid format (code 2060).
     """
     @wraps(func)
     def wrappers(*args, **kwargs):
         email = args[5] if len(args) > 2 else args[0]
+        print (f"[DEBUG]: {email}")
         if not re.findall(
             r"\b[a-zA-Z0-9._]+@[a-z]+\.(?:[a-z]+|[a-z]+\.[a-z]+)\b", email
         ):
@@ -32,7 +35,8 @@ def valitacion_email(func):
     return wrappers
 
 
-def validacion_link(url):
+def validacion_link(url: str) -> bool:
+    """Validate if a given URL is in a correct format."""
     if re.findall(
         r"https?://(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&/=\w]*)",
         url,
@@ -42,7 +46,8 @@ def validacion_link(url):
         return False
 
 
-def validate_date(date):
+def validate_date(date: str) -> bool:
+    """Validate if a given date string is in the format 'YYYY-MM-DD'."""
     return bool(
         re.findall(r"\b\d{4}[-/](?:0[1-9]|1[0-2])[-/](?:[0-2][1-9]|3[01])\b", date)
     )

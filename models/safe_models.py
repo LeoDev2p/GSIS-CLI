@@ -7,7 +7,8 @@ log = get_logger('DATABASE')
 
 
 class QuerySafe:
-    # Insertando datos sensibles
+    """Class to manage SQL queries with SQL injection prevention related to sensitive data in the database."""
+
     def _SQL_insert(self, *args):
         query = """
             INSERT INTO safe (site_name, id_category, url, username, email, password, last_change, expiry_days, security_level)
@@ -18,7 +19,7 @@ class QuerySafe:
             log.info("Data successfully inserted into the Safe table")
 
     # seleccionar todos los datos
-    def _SQL_select(self):
+    def _SQL_select(self) -> list[tuple]:
         query = """
             SELECT s.id, c.name, s.site_name, s.email, s.expiry_days FROM safe s
             JOIN categorySafe c ON s.id_category = c.id
@@ -50,7 +51,7 @@ class QuerySafe:
             log.info(f"Deleted id: {id}, from the database")
 
     # filtrar por id
-    def _SQL_filterById(self, id):
+    def _SQL_filterById(self, id) -> list[tuple]:
         query = """
             SELECT s.id, c.name, s.site_name, s.email FROM categorySafe c
             JOIN safe s ON c.id = s.id_category
@@ -60,7 +61,7 @@ class QuerySafe:
         return conectionDB(query, id, select=True)
 
     # filtrar por nombre de sitio
-    def _SQL_filterBySitename(self, site_name):
+    def _SQL_filterBySitename(self, site_name) -> list[tuple]:
         query = """
             SELECT s.id, c.name, s.site_name, s.email FROM categorySafe c
             JOIN safe s ON c.id = s.id_category
@@ -70,7 +71,7 @@ class QuerySafe:
         return conectionDB(query, site_name, select=True)
 
     # filtrar por id de categoria
-    def _SQL_filterBycategory(self, id_category):
+    def _SQL_filterBycategory(self, id_category) -> list[tuple]:
         query = """
             SELECT s.id, c.name, s.site_name, s.email, s.expiry_days from categorySafe c
             JOIN safe s ON c.id = s.id_category
@@ -80,7 +81,7 @@ class QuerySafe:
         return conectionDB(query, id_category, select=True)
 
     # filtrar por año y mes de modificacion
-    def _SQL_filterBylastChange(self, year, month=0):
+    def _SQL_filterBylastChange(self, year, month=0) -> list[tuple]:
         query = """
             SELECT s.id, c.name, s.site_name, s.email, s.expiry_days FROM safe s
             JOIN categorySafe c ON s.id_category = c.id
@@ -90,21 +91,12 @@ class QuerySafe:
         return conectionDB(query, year, month, select=True)
 
     # filtrar por rango de fechas 'YYYY-MM-DD'
-    def _SQL_filterRangeLastChange(self, date1: str = "YYYY-mm-dd", date2: str = "YYYY-mm-dd") -> list:
-        """Filtra los registros por un rango de fechas de último cambio.
-
-        Args:
-            date1 (str): Fecha de inicio del rango (YYYY-MM-DD).
-            date2 (str): Fecha de fin del rango (YYYY-MM-DD).
-
-        Returns:
-            list: Una lista con los registros encontrados en la base de datos.
-        """
+    def _SQL_filterRangeLastChange(self, date1: str, date2: str) -> list[tuple]:
         query = """
             SELECT s.id, c.name, s.site_name, s.email, s.expiry_days FROM safe s
             JOIN categorySafe c ON s.id_category = c.id
             WHERE last_change BETWEEN ? AND ?
-        """
+            """
 
         return conectionDB(query, date1, date2, select=True)
 

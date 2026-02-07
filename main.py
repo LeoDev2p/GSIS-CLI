@@ -1,5 +1,13 @@
+"""Main module for the GSIS-CLI application."""
+
+import time
+
 from views.app import Views, Filters
-from controllers.Database_controllers import *
+from controllers.Database_controllers import (
+    Createtables, SaveSafe, DeleteDataSafe, GetdataCategory, 
+    GetdataLastchange, GetdataRange_Lastchange, GetEverything, 
+    GetId, GETSitename, UpdateDataSafe, Savecategory, delete_category
+)
 from controllers.Auth_controller import login
 from core.Exceptions import (
     AuthError,
@@ -14,27 +22,30 @@ from core.Exceptions import (
 from utils.utils import Clearconsole, progress_bar
 from models.safe_models import QuerySafe
 from cryptography.fernet import InvalidToken
-import time
 
-import pdb
+from core.Exceptions import RowError
 
 
-class orquestador:
+
+class Orchestrator:
+    """Coordinates the main flow of the GSIS-CLI application."""
     def __init__(self, view, db_safe):
         self.status = False
+        self.session_password = None
         self.view = view
         self.db_safe = db_safe
-        self.result_query = None
 
         self.view_login()
 
     def view_login(self):
+        """Function responsible for handling the user login process, including credential validation and error handling."""
         while True:
             Clearconsole()
             self.view.Banner()
             credentials = self.view.inputCredentials()
             try:
-                if login(credentials[0], credentials[1]):
+                success, self.session_password = login(credentials[0], credentials[1])
+                if success:
                     progress_bar()
                     self.view.show_message("Successful login")
                     self.status = True
@@ -45,6 +56,7 @@ class orquestador:
                     break
 
     def run(self):
+        """Function responsible for running the main loop of the application, handling user interactions, and coordinating database operations based on user input."""
         # Limpiamos la consola
         while True:
             Clearconsole()
@@ -54,18 +66,18 @@ class orquestador:
 
             match option:
                 case 1:
-                    # pdb.set_trace ()
+                    # created tables
                     try:
                         if Createtables():
-                            self.view.show_message("Tables created successfully")
                             progress_bar()
+                            self.view.show_message("Tables created successfully")
                     except DataBaseError as db:
                         self.view.show_error(db)
 
                     finally:
-                        time.sleep(1)
+                        time.sleep(3)
                 case 2:
-                    # pdb.set_trace ()
+                    # add category
                     while True:
                         name_category = self.view.formcategoryInsert()
                         try:
@@ -81,22 +93,25 @@ class orquestador:
                                 break
                         finally:
                             time.sleep(1)
-
                 case 3:
+                    category = self.view.formcategoryInsert ()
+                    try:
+                        delete_category (category)
+                        progress_bar()
+                        self.view.show_message(f"{category} removed successfully")  
+                    except (CategoryError, InvalidParameterCountError) as ce:
+                        self.view.show_error(ce)
+                    
+                    time.sleep (5)
+                        
+                case 4:
+                    # add data to safe
                     while True:
                         data = self.view.formInsert()
                         try:
                             SaveSafe(
-                                self.db_safe,
-                                data[0],
-                                data[1],
-                                data[2],
-                                data[3],
-                                data[4],
-                                data[5],
-                                data[6],
-                                data[7],
-                            )
+                                self.db_safe, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], master_password=self.session_password
+                                )
                             progress_bar()
                             self.view.show_message("Data successfully insert")
                         except (
@@ -113,18 +128,20 @@ class orquestador:
 
                         time.sleep(1)
 
-                case 4:
+                case 5:
+                    # filter data
                     self.filters()
 
-                case 5:
+                case 6:
+                    # update data
                     data = self.view.formUpdate()
                     try:
-                        results = GETSitename(self.db_safe, data[0])
+                        results = GETSitename(self.db_safe, data[0], master_password=self.session_password)
                         if results:
                             # mostrar datos antes de actualiza
                             self.view.show_data(results)
                             if self.view.ask() == "S":
-                                UpdateDataSafe(self.db_safe, data)
+                                UpdateDataSafe(self.db_safe, data, master_password=self.session_password)
                                 progress_bar()
                                 self.view.show_message(
                                     f"{results[0][2]} successfully update"
@@ -136,7 +153,8 @@ class orquestador:
                     finally:
                         time.sleep(2)
 
-                case 6:
+                case 7:
+                    # delete data
                     id = self.view.formID()
                     try:
                         results = GetId(self.db_safe, id)
@@ -155,7 +173,8 @@ class orquestador:
                     finally:
                         time.sleep(2)
 
-                case 7:
+                case 8:
+                    # exit
                     self.view.show_message("leaving  .....")
                     time.sleep(0.5)
                     break
@@ -163,6 +182,7 @@ class orquestador:
                     self.view.show_message("Option not available")
 
     def filters(self):
+        """Function responsible for handling the filter data."""
         while True:
             Clearconsole()
             self.view.Banner()
@@ -172,7 +192,7 @@ class orquestador:
             match option:
                 case 1:
                     try:
-                        results = GetEverything(self.db_safe)
+                        results = GetEverything(self.db_safe, master_password=self.session_password)
                         self.view.show_message("consulting data")
                         progress_bar()
                         Filters.show_dataFilter(results, title="CATEGORY SEARCH")
@@ -184,7 +204,7 @@ class orquestador:
                 case 2:
                     username = self.view.formSitename()
                     try:
-                        results = GETSitename(self.db_safe, username)
+                        results = GETSitename(self.db_safe, username, master_password=self.session_password)
                         self.view.show_message("consulting data")
                         progress_bar()
                         self.view.show_data(results, title="WEBSITE SEARCH")
@@ -197,7 +217,7 @@ class orquestador:
                 case 3:
                     category = self.view.formcategoryInsert()
                     try:
-                        results = GetdataCategory(self.db_safe, category)
+                        results = GetdataCategory(self.db_safe, category, master_password=self.session_password)
                         self.view.show_message("consulting data")
                         progress_bar()
                         Filters.show_dataFilter(results, title="CATEGORY SEARCH")
@@ -210,7 +230,7 @@ class orquestador:
                 case 4:
                     data = Filters.form_yearmonth()
                     try:
-                        results = GetdataLastchange(self.db_safe, data[0], data[1])
+                        results = GetdataLastchange(self.db_safe, data[0], data[1], master_password=self.session_password)
                         self.view.show_message("consulting data")
                         progress_bar()
                         Filters.show_dataFilter(results, title="LAST CHANGE SEARCH")
@@ -224,7 +244,7 @@ class orquestador:
                     data = Filters.form_yearyear()
                     try:
                         results = GetdataRange_Lastchange(
-                            self.db_safe, data[0], data[1]
+                            self.db_safe, data[0], data[1], master_password=self.session_password
                         )
                         self.view.show_message("consulting data")
                         progress_bar()
@@ -244,8 +264,12 @@ class orquestador:
 
 
 if __name__ == "__main__":
-    view = Views()
-    db_safe = QuerySafe()
-    data = orquestador(view, db_safe)
-    if data.status:
-        data.run()
+    try:
+        view = Views()
+        db_safe = QuerySafe()
+        data = Orchestrator(view, db_safe)
+        if data.status:
+            data.run()
+    except KeyboardInterrupt:
+        view.show_message("leaving  .....")
+        time.sleep(0.5)

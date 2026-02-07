@@ -1,3 +1,5 @@
+"""Module responsible for handling database connections and table creations for the application."""
+
 from core import config, Exceptions
 from core.logger import get_logger
 import sqlite3
@@ -6,20 +8,21 @@ log = get_logger("DATABASE")
 
 
 def conectionDB(query, *args, select=False):
-    """Ejecuta query SQL con prevención de SQL injection.
-    
+    """Executes SQL query with SQL injection prevention.
+
     Args:
-        query: Query SQL con placeholders (?).
-        *args: Parámetros de la query.
-        select: True para SELECT, False para INSERT/UPDATE/DELETE.
-    
+        query: SQL query with placeholders (?).
+        *args: Query parameters.
+        select: True for SELECT, False for INSERT/UPDATE/DELETE.
+
     Returns:
-        list si select=True, bool si exitoso.
-    
+        list if select=True, bool if successful.
+
     Raises:
-        DataBaseError: Error de SQLite.
-        InvalidParameterCountError: Parámetros incorrectos.
-        RestrictionError: Violación de constraint.
+        DataBaseError: SQLite error.
+        InvalidParameterCountError: Invalid parameters.
+        RestrictionError: Constraint violation.
+
     """
     try:
         with sqlite3.connect(config.ROOT_DB) as conn:
@@ -46,9 +49,10 @@ def conectionDB(query, *args, select=False):
 
 
 class CreateTable:
-
+    """Create necessary tables for the aplication if they do not exist."""
     @staticmethod
     def createTableSafe():
+        """Craate the 'safe' table in the database if it does not exist."""
         query = """
             CREATE TABLE IF NOT EXISTS safe (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,6 +77,7 @@ class CreateTable:
 
     @staticmethod
     def creatTablecategory():
+        """Create the 'categorySafe' table in the database if it does not exist."""
         query = """
             CREATE TABLE IF NOT EXISTS categorySafe (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,

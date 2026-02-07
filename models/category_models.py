@@ -1,3 +1,5 @@
+"""Module responsible for handling database operations related to category management."""
+
 from .database import conectionDB
 from core.logger import get_logger
 
@@ -5,6 +7,7 @@ log = get_logger("DATABASE")
 
 
 class QueryCatgory:
+    """Class to manage SQL queries with SQL injection prevention related to category management in the database."""
     # insertar categoria
     @staticmethod
     def _SQL_insert(id):
@@ -19,7 +22,7 @@ class QueryCatgory:
 
     # Traendo el ID de la categoria especifica
     @staticmethod
-    def _SQL_select(category):
+    def _SQL_select(category) -> list[tuple]:
         query = """
             SELECT id FROM categorysafe
             WHERE name = ?
@@ -41,7 +44,8 @@ class QueryCatgory:
 
     # eliminacion de elemento de la tabla categoria
     @staticmethod
-    def _SQL_delete(self, id):
+    def _SQL_delete(id):
+
         query = """
             DELETE FROM categorySafe
             WHERE id = ?
