@@ -4,9 +4,18 @@ import time
 
 from views.app import Views, Filters
 from controllers.Database_controllers import (
-    Createtables, SaveSafe, DeleteDataSafe, GetdataCategory, 
-    GetdataLastchange, GetdataRange_Lastchange, GetEverything, 
-    GetId, GETSitename, UpdateDataSafe, Savecategory, delete_category
+    Createtables,
+    SaveSafe,
+    DeleteDataSafe,
+    GetdataCategory,
+    GetdataLastchange,
+    GetdataRange_Lastchange,
+    GetEverything,
+    GetId,
+    GETSitename,
+    UpdateDataSafe,
+    Savecategory,
+    delete_category,
 )
 from controllers.Auth_controller import login
 from core.Exceptions import (
@@ -18,7 +27,7 @@ from core.Exceptions import (
     RestrictionError,
     PasswordMismatchError,
     HashCorruptionError,
-    SecurityError
+    SecurityError,
 )
 from utils.utils import Clearconsole, progress_bar
 from models.safe_models import QuerySafe
@@ -27,9 +36,9 @@ from cryptography.fernet import InvalidToken
 from core.Exceptions import RowError
 
 
-
 class Orchestrator:
     """Coordinates the main flow of the GSIS-CLI application."""
+
     def __init__(self, view, db_safe):
         self.status = False
         self.session_password = None
@@ -51,7 +60,13 @@ class Orchestrator:
                     self.view.show_message("Successful login")
                     self.status = True
                     break
-            except (SecurityError, PasswordMismatchError, HashCorruptionError, AuthError, InvalidToken) as a:
+            except (
+                SecurityError,
+                PasswordMismatchError,
+                HashCorruptionError,
+                AuthError,
+                InvalidToken,
+            ) as a:
                 self.view.show_error(a)
 
             if self.view.ask("Do you want to go out? Y/N") == "N":
@@ -96,24 +111,33 @@ class Orchestrator:
                         finally:
                             time.sleep(1)
                 case 3:
-                    category = self.view.formcategoryInsert ()
+                    category = self.view.formcategoryInsert()
                     try:
-                        delete_category (category)
+                        delete_category(category)
                         progress_bar()
-                        self.view.show_message(f"{category} removed successfully")  
+                        self.view.show_message(f"{category} removed successfully")
                     except (CategoryError, InvalidParameterCountError) as ce:
                         self.view.show_error(ce)
-                    
-                    time.sleep (5)
-                        
+
+                    time.sleep(5)
+
                 case 4:
                     # add data to safe
                     while True:
                         data = self.view.formInsert()
                         try:
                             SaveSafe(
-                                self.db_safe, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], master_password=self.session_password
-                                )
+                                self.db_safe,
+                                data[0],
+                                data[1],
+                                data[2],
+                                data[3],
+                                data[4],
+                                data[5],
+                                data[6],
+                                data[7],
+                                master_password=self.session_password,
+                            )
                             progress_bar()
                             self.view.show_message("Data successfully insert")
                         except (
@@ -138,12 +162,18 @@ class Orchestrator:
                     # update data
                     data = self.view.formUpdate()
                     try:
-                        results = GETSitename(self.db_safe, data[0], master_password=self.session_password)
+                        results = GETSitename(
+                            self.db_safe, data[0], master_password=self.session_password
+                        )
                         if results:
                             # mostrar datos antes de actualiza
-                            self.view.show_data(results)
+                            self.view.show_data(results, title = "DATA TO UPDATE")
                             if self.view.ask() == "S":
-                                UpdateDataSafe(self.db_safe, data, master_password=self.session_password)
+                                UpdateDataSafe(
+                                    self.db_safe,
+                                    data,
+                                    master_password=self.session_password,
+                                )
                                 progress_bar()
                                 self.view.show_message(
                                     f"{results[0][2]} successfully update"
@@ -159,9 +189,9 @@ class Orchestrator:
                     # delete data
                     id = self.view.formID()
                     try:
-                        results = GetId(self.db_safe, id)
+                        results = GetId(self.db_safe, id, master_password=self.session_password)
                         if results:
-                            self.view.show_data(results)
+                            self.view.show_data(results, title = "DATA TO DELETE")
                             if self.view.ask() == "S":
                                 DeleteDataSafe(self.db_safe, id)
                                 progress_bar()
@@ -194,7 +224,9 @@ class Orchestrator:
             match option:
                 case 1:
                     try:
-                        results = GetEverything(self.db_safe, master_password=self.session_password)
+                        results = GetEverything(
+                            self.db_safe, master_password=self.session_password
+                        )
                         self.view.show_message("consulting data")
                         progress_bar()
                         Filters.show_dataFilter(results, title="CATEGORY SEARCH")
@@ -206,7 +238,11 @@ class Orchestrator:
                 case 2:
                     username = self.view.formSitename()
                     try:
-                        results = GETSitename(self.db_safe, username, master_password=self.session_password)
+                        results = GETSitename(
+                            self.db_safe,
+                            username,
+                            master_password=self.session_password,
+                        )
                         self.view.show_message("consulting data")
                         progress_bar()
                         self.view.show_data(results, title="WEBSITE SEARCH")
@@ -219,7 +255,11 @@ class Orchestrator:
                 case 3:
                     category = self.view.formcategoryInsert()
                     try:
-                        results = GetdataCategory(self.db_safe, category, master_password=self.session_password)
+                        results = GetdataCategory(
+                            self.db_safe,
+                            category,
+                            master_password=self.session_password,
+                        )
                         self.view.show_message("consulting data")
                         progress_bar()
                         Filters.show_dataFilter(results, title="CATEGORY SEARCH")
@@ -232,7 +272,12 @@ class Orchestrator:
                 case 4:
                     data = Filters.form_yearmonth()
                     try:
-                        results = GetdataLastchange(self.db_safe, data[0], data[1], master_password=self.session_password)
+                        results = GetdataLastchange(
+                            self.db_safe,
+                            data[0],
+                            data[1],
+                            master_password=self.session_password,
+                        )
                         self.view.show_message("consulting data")
                         progress_bar()
                         Filters.show_dataFilter(results, title="LAST CHANGE SEARCH")
@@ -246,7 +291,10 @@ class Orchestrator:
                     data = Filters.form_yearyear()
                     try:
                         results = GetdataRange_Lastchange(
-                            self.db_safe, data[0], data[1], master_password=self.session_password
+                            self.db_safe,
+                            data[0],
+                            data[1],
+                            master_password=self.session_password,
                         )
                         self.view.show_message("consulting data")
                         progress_bar()

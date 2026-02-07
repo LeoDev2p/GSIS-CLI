@@ -106,10 +106,11 @@ def __validatedata(data: list[tuple], identifier: str | int, error_msg: str | No
     return data
 
 
-def GetId(db_safe: object, id: int) -> list[tuple]:
+def GetId(db_safe: object, id: int, master_password: str = "") -> list[tuple]:
     """Get data from the safe based on the provided ID."""
     data = db_safe._SQL_filterById(id)
-    return __validatedata(data, id)
+    new_data = controlls_decrypt(data, master_password)
+    return __validatedata(new_data, id)
 
 
 def GETSitename(db_safe: object, username: str, master_password: str = "") -> list[tuple]:
@@ -170,8 +171,7 @@ def controlls_decrypt(data: list[tuple], master_password: str = "") -> list[list
         A list of list with the decrypted data.
     """
     new_data = []
-    for row in data: # Más limpio: for row in data en lugar de range
-        # Copiamos los primeros 3 elementos
+    for row in data: 
         current_row = list(row[:3])
         
         # DESENCRIPTAMOS usando la password REAL

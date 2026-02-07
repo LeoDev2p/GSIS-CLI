@@ -14,7 +14,8 @@ class Views:
     @staticmethod
     def Banner():
         """Displays the application banner in the console."""
-        print(r"""
+        print(
+            r"""
           ______    ______   ______   ______            ______   __        ______ 
          /      \  /      \ /      | /      \           /      \ /  |      /      |
         /$$$$$$  |/$$$$$$  |$$$$$$/ /$$$$$$  |        /$$$$$$  |$$ |      $$$$$$/ 
@@ -25,12 +26,14 @@ class Views:
         $$    $$/ $$    $$/ / $$   |$$    $$/         $$    $$/ $$       |/ $$   |
          $$$$$$/   $$$$$$/  $$$$$$/  $$$$$$/           $$$$$$/  $$$$$$$$/ $$$$$$/ 
                                                                 By LeoDev2p                        
-        """)
+        """
+        )
 
     @staticmethod
     def Menu():
         """Displays the main menu options in the console."""
-        print("""
+        print(
+            """
         [1] Create data base
         [2] Add categories
         [3] Delete categories
@@ -39,7 +42,8 @@ class Views:
         [6] Update data
         [7] Delete data
         [8] Exit
-        """)
+        """
+        )
 
     @staticmethod
     def inputCredentials() -> tuple:
@@ -80,7 +84,16 @@ class Views:
         except ValueError as v:
             print(f"Error: {v}")
 
-        return (site_name, category, url, username, email, password, expiry_days, security_level)
+        return (
+            site_name,
+            category,
+            url,
+            username,
+            email,
+            password,
+            expiry_days,
+            security_level,
+        )
 
     @staticmethod
     def formUpdate() -> tuple:
@@ -166,17 +179,20 @@ class Views:
 
 class Filters:
     """Filters class responsible for managing the user interface related to data filtering and display of filtered results in the console."""
+
     @staticmethod
     def Menu_filter():
         """Displays the filter menu options in the console."""
-        print("""
+        print(
+            """
         [1] View All
         [2] Filter by site name
         [3] Filter by category
         [4] Filter by year and month
         [5] Filter by date range of modification
         [6] Exit
-        """)
+        """
+        )
 
     @staticmethod
     def show_dataFilter(row_data: list[tuple], title="RESULTS"):
@@ -236,4 +252,3 @@ class Filters:
             print(f"Error: {ve}")
 
         return (year1, year2)
-    

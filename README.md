@@ -31,7 +31,6 @@
 - **📊 Gestión Inteligente**: Organiza tus contraseñas por categorías con fechas de expiración
 - **🔍 Búsquedas Avanzadas**: Múltiples filtros para encontrar tus credenciales rápidamente
 - **📝 Registro Completo**: Sistema de logging para auditoría y debugging
-- **📝 Registro Completo**: Sistema de logging para auditoría y debugging
 - **💻 Interfaz Intuitiva**: CLI moderna y fácil de usar
 
 
