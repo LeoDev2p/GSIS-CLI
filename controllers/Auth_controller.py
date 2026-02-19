@@ -7,7 +7,6 @@ from core.Exceptions import AuthError, SecurityError, PasswordMismatchError, Has
 from security.hashing import hashVerify
 from security.integrity import register_failed_attempt, trigger_self_destruct, get_attempts_data, reset_attempts
 
-# Iniciamos la session
 @valitacion_email
 def login(*args):
     """Login function that validates the user credentials against the master key.

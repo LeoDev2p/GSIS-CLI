@@ -44,7 +44,6 @@ class CipherManager:
             InvalidToken: If the encryption process fails due to an invalid token.
         """
         try:
-            # La llave NO vive en el .env, se crea aquí y muere al terminar la función
             key = CipherManager._generate_key(master_password)
             f = Fernet(key)
             

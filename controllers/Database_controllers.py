@@ -97,7 +97,7 @@ def DeleteDataSafe(db_safe: object, id: int) -> None:
     db_safe._SQL_delete(id)
 
 
-# validamos si hay datos  o no
+
 def __validatedata(data: list[tuple], identifier: str | int, error_msg: str | None = None) ->list[tuple]:
     """Validate if data has data; if not, raise a RowError."""
     if not data:

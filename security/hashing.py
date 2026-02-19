@@ -9,7 +9,6 @@ from core.logger import get_logger
 log = get_logger("SECURITY.HASH")
 
 
-# creamos el hash de contraseña
 def hashCreate(password: str) -> str | bytes:
     """Hash a password using Argon2 algorithm."""
     ph = ARGON2_SETTING
@@ -36,4 +35,3 @@ def hashVerify(hash: str | bytes, password: str) -> bool:
 
     return value
 
-# comporbar si el hash es valido o no func

@@ -8,7 +8,6 @@ log = get_logger("DATABASE")
 
 class QueryCatgory:
     """Class to manage SQL queries with SQL injection prevention related to category management in the database."""
-    # insertar categoria
     @staticmethod
     def _SQL_insert(id):
         query = """
