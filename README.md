@@ -1,4 +1,4 @@
-# GSIS-CLI - Gestor Seguro de Información Sensible
+# GSIS-CLI - Secure Sensitive Information Manager
 
 ![GSIS-CLI Banner](./assets/banner.svg)
 
@@ -9,87 +9,87 @@
 [![Security](https://img.shields.io/badge/security-Argon2%20%2B%20PBKDF2%20%2B%20Fernet-red.svg)](https://github.com/yourusername/GSIS-CLI)
 [![SQLite](https://img.shields.io/badge/database-SQLite-blue.svg)](https://www.sqlite.org/)
 
-**Un gestor de contraseñas seguro y robusto con interfaz de línea de comandos**
+**A secure and robust password manager with command-line interface**
 
-[Características](#características) • [Instalación](#instalación) • [Uso](#uso) • [Seguridad](#seguridad) • [Documentación](#documentación)
+[Features](#features) • [Installation](#installation) • [Usage](#usage) • [Security](#security) • [Documentation](#documentation)
 
 
 </div>
 
 ---
 
-## 📋 Descripción
+## 📋 Description
 
-**GSIS-CLI** (Gestor Seguro de Información Sensible - CLI) es un administrador de contraseñas profesional desarrollado en Python que combina seguridad de nivel empresarial con una interfaz de línea de comandos intuitiva. Diseñado siguiendo el patrón arquitectónico **MVC (Modelo-Vista-Controlador)**, garantiza la máxima protección de tus credenciales mediante algoritmos de cifrado y hashing de última generación.
+**GSIS-CLI** (Secure Sensitive Information Manager - CLI) is a professional password manager developed in Python that combines enterprise-grade security with an intuitive command-line interface. Designed following the **MVC (Model-View-Controller)** architectural pattern, it guarantees maximum protection of your credentials through state-of-the-art encryption and hashing algorithms.
 
-### 🎯 ¿Por qué GSIS-CLI?
+### 🎯 Why GSIS-CLI?
 
-- **🔒 Seguridad de Nivel Empresarial**: Implementa Argon2id para hashing, PBKDF2 para derivación de llaves y Fernet (AES-256) para cifrado
-- **🛡️ Protección Anti-Ataques**: Sistema automático de eliminación de BD tras 3 intentos fallidos
-- **🔑 Sin Llaves Persistentes**: Las claves de cifrado se derivan en tiempo de ejecución mediante KDF
-- **🏗️ Arquitectura Profesional**: Código limpio siguiendo principios SOLID y patrón MVC
-- **📊 Gestión Inteligente**: Organiza tus contraseñas por categorías con fechas de expiración
-- **🔍 Búsquedas Avanzadas**: Múltiples filtros para encontrar tus credenciales rápidamente
-- **📝 Registro Completo**: Sistema de logging para auditoría y debugging
-- **💻 Interfaz Intuitiva**: CLI moderna y fácil de usar
+- **🔒 Enterprise-Level Security**: Implements Argon2id for hashing, PBKDF2 for key derivation, and Fernet (AES-256) for encryption
+- **🛡️ Anti-Attack Protection**: Automatic database deletion system after 3 failed attempts
+- **🔑 No Persistent Keys**: Encryption keys are derived at runtime via KDF
+- **🏗️ Professional Architecture**: Clean code following SOLID principles and MVC pattern
+- **📊 Smart Management**: Organize your passwords by categories with expiration dates
+- **🔍 Advanced Searches**: Multiple filters to quickly find your credentials
+- **📝 Complete Logging**: Logging system for auditing and debugging
+- **💻 Intuitive Interface**: Modern and easy-to-use CLI
 
-
----
-
-## ✨ Características
-
-### 🔐 Seguridad Avanzada
-
-- **Autenticación Robusta**: Sistema de login con credenciales maestras
-- **Hashing Argon2id**: Protección contra ataques de fuerza bruta y rainbow tables
-- **Derivación de Llaves PBKDF2**: Generación de claves de cifrado mediante KDF (Key Derivation Function) con 480,000 iteraciones
-- **Cifrado Fernet (AES-256)**: Cifrado simétrico de última generación sin almacenamiento persistente de llaves
-- **Protección Anti-Fuerza Bruta**: Sistema de intentos fallidos que elimina automáticamente la base de datos después de 3 intentos incorrectos
-- **Validación de Contraseñas**: Verificación de integridad mediante hashes
-
-### 📂 Gestión de Datos
-
-- **Base de Datos SQLite**: Almacenamiento local seguro y eficiente
-- **Categorización**: Organiza tus credenciales por categorías personalizadas
-- **Campos Completos**: Almacena sitio, URL, usuario, email, contraseña, nivel de seguridad
-- **Fechas de Expiración**: Control de vencimiento de contraseñas
-- **Última Modificación**: Seguimiento de cambios con timestamps
-
-### 🔍 Filtros y Búsquedas
-
-1. **Ver Todo**: Consulta todas las credenciales almacenadas
-2. **Por Sitio Web**: Busca credenciales específicas por nombre del sitio
-3. **Por Categoría**: Filtra por tipo de servicio (redes sociales, bancos, etc.)
-4. **Por Fecha**: Busca por mes/año de última modificación
-5. **Por Rango de Fechas**: Consulta credenciales modificadas en un período específico
-
-### ⚙️ Operaciones CRUD
-
-- ✅ **Create**: Agregar nuevas credenciales y categorías
-- 📖 **Read**: Consultar con múltiples filtros
-- ✏️ **Update**: Actualizar credenciales existentes
-- 🗑️ **Delete**: Eliminar registros con confirmación
 
 ---
 
-## 🚀 Instalación
+## ✨ Features
 
-### Prerrequisitos
+### 🔐 Advanced Security
 
-- **Python 3.8 o superior**
-- **pip** (gestor de paquetes de Python)
-- **Git** (opcional, para clonar el repositorio)
+- **Robust Authentication**: Login system with master credentials
+- **Argon2id Hashing**: Protection against brute force attacks and rainbow tables
+- **PBKDF2 Key Derivation**: Secure encryption key generation via KDF (Key Derivation Function) with 480,000 iterations
+- **Fernet Encryption (AES-256)**: State-of-the-art symmetric encryption without persistent key storage
+- **Anti-Brute Force Protection**: Automatic database deletion after 3 failed attempts
+- **Password Validation**: Integrity verification through hashes
 
-### Pasos de Instalación
+### 📂 Data Management
 
-#### 1️⃣ Clonar el Repositorio
+- **SQLite Database**: Secure and efficient local storage
+- **Categorization**: Organize your credentials into custom categories
+- **Complete Fields**: Stores site, URL, username, email, password, security level
+- **Expiration Dates**: Password expiration control
+- **Last Modified**: Change tracking with timestamps
+
+### 🔍 Filters and Searches
+
+1. **View All**: Query all stored credentials
+2. **By Website**: Search specific credentials by site name
+3. **By Category**: Filter by service type (social media, banks, etc.)
+4. **By Date**: Search by month/year of last modification
+5. **By Date Range**: Query credentials modified in a specific period
+
+### ⚙️ CRUD Operations
+
+- ✅ **Create**: Add new credentials and categories
+- 📖 **Read**: Query with multiple filters
+- ✏️ **Update**: Update existing credentials
+- 🗑️ **Delete**: Remove records with confirmation
+
+---
+
+## 🚀 Installation
+
+### Prerequisites
+
+- **Python 3.8 or higher**
+- **pip** (Python package manager)
+- **Git** (optional, to clone the repository)
+
+### Installation Steps
+
+#### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/LeoDev2p/GSIS-CLI.git
 cd GSIS-CLI
 ```
 
-#### 2️⃣ Crear Entorno Virtual (Recomendado)
+#### 2️⃣ Create Virtual Environment (Recommended)
 
 **Windows:**
 ```powershell
@@ -103,33 +103,33 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-#### 3️⃣ Instalar Dependencias
+#### 3️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-#### 4️⃣ Configurar Variables de Entorno
+#### 4️⃣ Configure Environment Variables
 
-Crea o edita el archivo `.env` en la raíz del proyecto:
+Create or edit the `.env` file in the project root:
 
 ```env
-# Credenciales de Autenticación
-SUPERUSER = "tu_email@ejemplo.com"
-MASTER_KEY = "$argon2id$v=19$m=65536,t=3,p=2$..." # Hash de tu contraseña maestra
+# Authentication Credentials
+SUPERUSER = "your_email@example.com"
+MASTER_KEY = "$argon2id$v=19$m=65536,t=3,p=2$..." # Hash of your master password
 
-# SALT para Derivación de Llaves (PBKDF2)
-SALT = "tu_salt_base64_aqui"
+# SALT for Key Derivation (PBKDF2)
+SALT = "your_base64_salt_here"
 
-# Nombre de la Base de Datos
+# Database Name
 NAME_BD = "Secure.db"
 ```
 
-> **⚠️ IMPORTANTE**: Nunca compartas tu archivo `.env`. Ya está incluido en `.gitignore`
+> **⚠️ IMPORTANT**: Never share your `.env` file. It's already included in `.gitignore`
 
-#### 5️⃣ Generar Claves de Seguridad
+#### 5️⃣ Generate Security Keys
 
-Para generar tu SALT (usado en la derivación de llaves PBKDF2):
+To generate your SALT (used in PBKDF2 key derivation):
 
 ```python
 import base64
@@ -138,34 +138,34 @@ salt = base64.urlsafe_b64encode(os.urandom(16)).decode()
 print(f"SALT = {salt}")
 ```
 
-Para generar el hash de tu contraseña maestra:
+To generate your master password hash:
 
 ```python
 from argon2 import PasswordHasher
 ph = PasswordHasher()
-print(ph.hash("tu_contraseña_maestra"))
+print(ph.hash("your_master_password"))
 ```
 
 ---
 
-## 📖 Uso
+## 📖 Usage
 
-### Iniciar la Aplicación
+### Start the Application
 
 ```bash
 python main.py
 ```
 
-### Menú Principal
+### Main Menu
 
-Una vez autenticado, verás el siguiente menú:
+Once authenticated, you will see the following menu:
 
 ```
 ╔═══════════════════════════════════════════╗
 ║           GSIS-CLI - MAIN MENU            ║
 ╚═══════════════════════════════════════════╝
 
-1. 📊 Create Tables (Primera vez)
+1. 📊 Create Tables (First time)
 2. 📁 Add Category
 3. ➕ Add New Credential
 4. 🔍 Search/Filter Credentials
@@ -176,42 +176,42 @@ Una vez autenticado, verás el siguiente menú:
 Select an option:
 ```
 
-### Flujo de Trabajo Típico
+### Typical Workflow
 
-#### 1. Primera Ejecución - Crear Tablas
+#### 1. First Run - Create Tables
 
-En el primer uso, selecciona la opción **1** para crear las tablas de la base de datos:
+On first use, select option **1** to create the database tables:
 
 ```bash
 Select an option: 1
 ✅ Tables created successfully
 ```
 
-#### 2. Agregar Categorías
+#### 2. Add Categories
 
-Organiza tus credenciales creando categorías:
+Organize your credentials by creating categories:
 
 ```bash
 Select an option: 2
-Enter category name: Redes Sociales
-✅ Redes Sociales added successfully
+Enter category name: Social Media
+✅ Social Media added successfully
 ```
 
-**Categorías sugeridas**: Correos, Bancos, Redes Sociales, Trabajo, Streaming, Juegos, etc.
+**Suggested Categories**: Email, Banks, Social Media, Work, Streaming, Games, etc.
 
-#### 3. Agregar Credenciales
+#### 3. Add Credentials
 
-Guarda una nueva contraseña:
+Save a new password:
 
 ```bash
 Select an option: 3
 
 📝 Enter credential details:
 Site name: Facebook
-Category: Redes Sociales
+Category: Social Media
 URL: https://facebook.com
-Username: mi_usuario
-Email: usuario@ejemplo.com
+Username: my_username
+Email: user@example.com
 Password: ************
 Expiry days: 90
 Security level (1-5): 4
@@ -219,9 +219,9 @@ Security level (1-5): 4
 ✅ Data successfully inserted
 ```
 
-#### 4. Buscar Credenciales
+#### 4. Search Credentials
 
-Accede a tus contraseñas guardadas:
+Access your saved passwords:
 
 ```bash
 Select an option: 4
@@ -240,184 +240,222 @@ Select an option: 4
 Select filter:
 ```
 
-#### 5. Actualizar Contraseñas
+#### 5. Update Passwords
 
-Modifica credenciales existentes:
+Modify existing credentials:
 
 ```bash
 Select an option: 5
 Enter site name: Facebook
 
-[Muestra datos actuales]
+[Shows current data]
 
-Do you want to update? (S/N): S
-Enter new username: nuevo_usuario
+Do you want to update? (Y/N): Y
+Enter new username: new_username
 Enter new password: ************
 ...
 ✅ Facebook successfully updated
 ```
 
-#### 6. Eliminar Credenciales
+#### 6. Delete Credentials
 
-Borra registros que ya no necesitas:
+Remove records you no longer need:
 
 ```bash
 Select an option: 6
 Enter credential ID: 5
 
-[Muestra información del registro]
+[Shows record information]
 
-Confirm deletion? (S/N): S
+Confirm deletion? (Y/N): Y
 ✅ Facebook successfully removed
 ```
 
 ---
 
-## 🔐 Seguridad
+## 🔐 Security
 
-### Tecnologías Implementadas
+### Implemented Technologies
 
-| Componente | Tecnología | Propósito |
-|------------|------------|-----------|
-| **Hashing** | Argon2id | Protección de contraseña maestra |
-| **Derivación de Llaves** | PBKDF2-HMAC-SHA256 | Generación segura de claves de cifrado (480k iteraciones) |
-| **Cifrado** | Fernet (AES-256-CBC) | Cifrado de datos sensibles sin persistencia de llaves |
-| **Protección Anti-Brute Force** | Sistema de Intentos | Eliminación automática de BD tras 3 intentos fallidos |
-| **Base de Datos** | SQLite | Almacenamiento local |
-| **Logging** | Python logging | Registro de operaciones |
-| **Logging** | Python logging | Registro de operaciones |
-
-
-### Buenas Prácticas Implementadas
-
-✅ **Separación de Credenciales**: Variables de entorno en `.env`  
-✅ **Derivación Segura de Llaves**: PBKDF2 con 480,000 iteraciones para generar claves de cifrado  
-✅ **Sin Persistencia de Llaves**: Las claves de cifrado se derivan en tiempo de ejecución y nunca se almacenan  
-✅ **Cifrado en Reposo**: Contraseñas cifradas en la BD  
-✅ **Protección Anti-Ataques**: Sistema automático de eliminación de BD tras 3 intentos fallidos  
-✅ **Validación de Entrada**: Prevención de inyección SQL  
-✅ **Manejo de Excepciones**: Sistema robusto de errores personalizados  
-✅ **Logging Seguro**: No se registran datos sensibles en logs  
-✅ **Arquitectura Modular**: Separación de responsabilidades (MVC)  
-✅ **Arquitectura Modular**: Separación de responsabilidades (MVC)
+| Component | Technology | Purpose |
+|------------|------------|---------|
+| **Hashing** | Argon2id | Master password protection |
+| **Key Derivation** | PBKDF2-HMAC-SHA256 | Secure encryption key generation (480k iterations) |
+| **Encryption** | Fernet (AES-256-CBC) | Sensitive data encryption without key persistence |
+| **Anti-Brute Force** | Attempt System | Automatic database deletion after 3 failed attempts |
+| **Database** | SQLite | Local storage |
+| **Logging** | Python logging | Operation logging |
+| **Logging** | Python logging | Operation logging |
 
 
-### Recomendaciones de Seguridad
+### Implemented Best Practices
 
-🔒 **Contraseña Maestra Fuerte**: Mínimo 16 caracteres con mayúsculas, minúsculas, números y símbolos  
-🔒 **Backup Seguro**: Respalda tu archivo `Secure.db` en un lugar cifrado  
-🔒 **Actualización Regular**: Cambia tus contraseñas periódicamente  
-🔒 **No Compartas**: Nunca compartas tu `.env` o base de datos
+✅ **Credential Separation**: Environment variables in `.env`  
+✅ **Secure Key Derivation**: PBKDF2 with 480,000 iterations for encryption key generation  
+✅ **No Key Persistence**: Encryption keys are derived at runtime and never stored  
+✅ **Encryption at Rest**: Passwords encrypted in the database  
+✅ **Attack Protection**: Automatic database deletion after 3 failed attempts  
+✅ **Input Validation**: SQL injection prevention  
+✅ **Exception Handling**: Robust custom error system  
+✅ **Secure Logging**: No sensitive data logged  
+✅ **Modular Architecture**: Separation of concerns (MVC)  
+✅ **Modular Architecture**: Separation of concerns (MVC)
+
+
+### Security Recommendations
+
+🔒 **Strong Master Password**: Minimum 16 characters with uppercase, lowercase, numbers, and symbols  
+🔒 **Secure Backup**: Backup your `Secure.db` file in an encrypted location  
+🔒 **Regular Updates**: Change your passwords periodically  
+🔒 **Do Not Share**: Never share your `.env` or database
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 GSIS-CLI/
 │
-├── 📄 main.py                          # Punto de entrada de la aplicación
-├── 📄 requirements.txt                 # Dependencias del proyecto
-├── 📄 requirements-dev.txt             # Dependencias de desarrollo del proyecto
-├── 📄 .env                             # Variables de entorno (NO compartir)
-├── 📄 .gitignore                       # Archivos ignorados por Git
-├── 📄 README.md                        # Este archivo
+├── 📄 main.py                          # Application entry point
+├── 📄 requirements.txt                 # Project dependencies
+├── 📄 requirements-dev.txt             # Development dependencies
+├── 📄 .env                             # Environment variables (DO NOT SHARE)
+├── 📄 .gitignore                       # Files ignored by Git
+├── 📄 README.md                        # This file
 │
-├── 📂 controllers/                     # Lógica de negocio
-│   ├── Auth_controller.py              # Autenticación de usuarios
-│   └── Database_controllers.py         # Operaciones CRUD
+├── 📂 controllers/                     # Business logic
+│   ├── Auth_controller.py              # User authentication
+│   └── Database_controllers.py         # CRUD operations
 │
-├── 📂 models/                          # Modelos de datos
-│   ├── database.py                     # Configuración de BD
-│   ├── safe_models.py                  # Modelo de credenciales
-│   └── category_models.py              # Modelo de categorías
+├── 📂 models/                          # Data models
+│   ├── database.py                     # Database configuration
+│   ├── safe_models.py                  # Credentials model
+│   └── category_models.py              # Categories model
 │
-├── 📂 views/                           # Interfaz de usuario
-│   └── app.py                          # Vistas CLI
+├── 📂 views/                           # User interface
+│   └── app.py                          # CLI views
 │
-├── 📂 security/                        # Módulos de seguridad
-│   ├── encryption.py                   # Cifrado Fernet
-│   └── hashing.py                      # Hashing Argon2
+├── 📂 security/                        # Security modules
+│   ├── encryption.py                   # Fernet encryption
+│   └── hashing.py                      # Argon2 hashing
 │
-├── 📂 core/                            # Configuración central
-│   ├── config.py                       # Configuración global
-│   ├── logger.py                       # Sistema de logs
-│   └── Exceptions.py                   # Excepciones personalizadas
+├── 📂 core/                            # Central configuration
+│   ├── config.py                       # Global settings
+│   ├── logger.py                       # Logging system
+│   └── Exceptions.py                   # Custom exceptions
 │
-├── 📂 utils/                           # Utilidades
-│   └── utils.py                        # Funciones auxiliares
+├── 📂 utils/                           # Utilities
+│   └── utils.py                        # Helper functions
 │
-├── 📂 db/                              # Base de datos
-│   └── Secure.db                       # BD SQLite (generada)
+├── 📂 db/                              # Database
+│   └── Secure.db                       # SQLite database (generated)
 │
-└── 📂 log/                             # Archivos de log
-    └── app.log                         # Logs de la aplicación
+└── 📂 log/                             # Log files
+    └── app.log                         # Application logs
 ```
 
 ---
 
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Technologies Used
 
-- **[Python 3.8+](https://www.python.org/)** - Lenguaje de programación
-- **[Argon2-cffi](https://argon2-cffi.readthedocs.io/)** - Hashing de contraseñas
-- **[Cryptography](https://cryptography.io/)** - Cifrado Fernet (AES-256) y PBKDF2
-- **[SQLite](https://www.sqlite.org/)** - Base de datos embebida
-- **[python-dotenv](https://pypi.org/project/python-dotenv/)** - Manejo de variables de entorno
-- **[python-dotenv](https://pypi.org/project/python-dotenv/)** - Manejo de variables de entorno
+- **[Python 3.8+](https://www.python.org/)** - Programming language
+- **[Argon2-cffi](https://argon2-cffi.readthedocs.io/)** - Password hashing
+- **[Cryptography](https://cryptography.io/)** - Fernet encryption (AES-256) and PBKDF2
+- **[SQLite](https://www.sqlite.org/)** - Embedded database
+- **[python-dotenv](https://pypi.org/project/python-dotenv/)** - Environment variable management
+- **[python-dotenv](https://pypi.org/project/python-dotenv/)** - Environment variable management
 
 
 ---
 
-## 🛡️ Sistema de Protección contra Ataques
+## 📦 Versioning
 
-GSIS-CLI implementa un sistema robusto de protección contra intentos de acceso no autorizado:
+This project follows the [Semantic Versioning (SemVer)](https://semver.org/) specification.
 
-### Mecanismo de Protección
-
-1. **Registro de Intentos Fallidos**: Cada intento de login incorrecto se registra automáticamente
-2. **Límite de Seguridad**: Después de **3 intentos fallidos**, el sistema activa el protocolo de protección
-3. **Eliminación Automática**: La base de datos se elimina completamente para proteger tus datos
-4. **Almacenamiento Seguro**: El contador de intentos se almacena en `%APPDATA%/SystemCacheLogs/win_sys_32.dat`
-
-### Flujo de Protección
+### Version Format
 
 ```
-Intento 1 ❌ → Advertencia + Registro
-Intento 2 ❌ → Advertencia crítica + Registro  
-Intento 3 ❌ → 🔥 ELIMINACIÓN AUTOMÁTICA DE LA BASE DE DATOS
+MAJOR.MINOR.PATCH
 ```
 
-> **⚠️ IMPORTANTE**: Este mecanismo protege tus datos de ataques de fuerza bruta, pero significa que debes recordar tu contraseña maestra. Asegúrate de hacer backups regulares de tu base de datos en un lugar seguro.
+- **MAJOR**: Incompatible changes with previous versions
+- **MINOR**: New backward-compatible features
+- **PATCH**: Bug fixes
 
-### Arquitectura de Seguridad
+### Version History
 
-- **Derivación de Llaves**: No se almacena ninguna clave de cifrado persistente
-- **PBKDF2-HMAC-SHA256**: 480,000 iteraciones para derivar llaves de cifrado
-- **Fernet (AES-256-CBC)**: Cifrado de datos sensibles en la base de datos
-- **Argon2id**: Hash de contraseña maestra con protección contra ataques GPU
+| Version | Date | Changes |
+|---------|------|---------|
+| **1.0.0** | 2026-02-19 | 🎉 Initial GSIS-CLI release with all base features |
+| | | - Master password authentication (Argon2id) |
+| | | - Fernet encryption (AES-256) for credentials |
+| | | - PBKDF2 key derivation (480k iterations) |
+| | | - Complete CRUD credential system |
+| | | - Password categorization |
+| | | - Multiple search filters |
+| | | - Anti-brute force protection |
+| | | - Complete logging system |
+| | | - Intuitive CLI interface |
+
+### Future Plans
+
+- **v1.1.0** - UI/UX improvements
+- **v1.2.0** - Import/Export credentials
+- **v2.0.0** - Cloud synchronization (E2EE)
+- **v2.1.0** - Companion mobile application
 
 ---
 
-## 🤝 Contribución
+## 🛡️ Attack Protection System
 
-Las contribuciones son bienvenidas. Para contribuir:
+GSIS-CLI implements a robust protection system against unauthorized access attempts:
 
-1. **Fork** el proyecto
-2. Crea una **rama** para tu feature (`git checkout -b feature/AmazingFeature`)
-3. **Commit** tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un **Pull Request**
+### Protection Mechanism
+
+1. **Failed Attempt Logging**: Each incorrect login attempt is automatically recorded
+2. **Security Limit**: After **3 failed attempts**, the system activates the protection protocol
+3. **Automatic Deletion**: The database is completely deleted to protect your data
+4. **Secure Storage**: Failed attempt counter is stored in `%APPDATA%/SystemCacheLogs/win_sys_32.dat`
+
+### Protection Flow
+
+```
+Attempt 1 ❌ → Warning + Logging
+Attempt 2 ❌ → Critical warning + Logging  
+Attempt 3 ❌ → 🔥 AUTOMATIC DATABASE DELETION
+```
+
+> **⚠️ IMPORTANT**: This mechanism protects your data against brute force attacks, but means you must remember your master password. Make sure to regularly backup your credentials database in a secure location.
+
+### Security Architecture
+
+- **Key Derivation**: No persistent encryption key is stored
+- **PBKDF2-HMAC-SHA256**: 480,000 iterations for encryption key derivation
+- **Fernet (AES-256-CBC)**: Sensitive data encryption in the database
+- **Argon2id**: Master password hash with GPU attack protection
 
 ---
 
-## 📝 Licencia
+## 🤝 Contributing
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+Contributions are welcome. To contribute:
+
+1. **Fork** the project
+2. Create a **branch** for your feature (`git checkout -b feature/AmazingFeature`)
+3. **Commit** your changes (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** to the branch (`git push origin feature/AmazingFeature`)
+5. Open a **Pull Request**
 
 ---
 
-## 👤 Autor
+## 📝 License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+---
+
+## 👤 Author
 
 **LeoDev Development**
 
@@ -428,7 +466,7 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para má
 
 <div align="center">
 
-**⭐ Si te resulta útil este proyecto, considera darle una estrella en GitHub ⭐**
+**⭐ If you find this project useful, consider giving it a star on GitHub ⭐**
 
 LeoDev2p Development
 
