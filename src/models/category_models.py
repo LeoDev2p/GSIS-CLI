@@ -1,12 +1,9 @@
 """Module responsible for handling database operations related to category management."""
 
 from .database import conectionDB
-from core.logger import get_logger
-
-log = get_logger("DATABASE")
 
 
-class QueryCatgory:
+class CategorySQL:
     """Class to manage SQL queries with SQL injection prevention related to category management in the database."""
     @staticmethod
     def _SQL_insert(id):
@@ -15,9 +12,7 @@ class QueryCatgory:
             VALUES (?)
         """
 
-        result = conectionDB(query, id)
-        if result:
-            log.info("New category added successfully")
+        conectionDB(query, id)
 
     # Traendo el ID de la categoria especifica
     @staticmethod
@@ -28,6 +23,15 @@ class QueryCatgory:
         """
         return conectionDB(query, category, select=True)
 
+    # Listar todas las categorías existentes
+    @staticmethod
+    def _SQL_getAll() -> list[tuple]:
+        query = """
+            SELECT id, name FROM categorysafe
+            ORDER BY name
+        """
+        return conectionDB(query, select=True)
+
     # actualizacion de la tabla categoria
     @staticmethod
     def _SQL_update(name, id):
@@ -37,9 +41,7 @@ class QueryCatgory:
             WHERE id = ?
         """
 
-        result = conectionDB(query, name, id)
-        if result:
-            log.info(f"Category {name} successfully updated")
+        conectionDB(query, name, id)
 
     # eliminacion de elemento de la tabla categoria
     @staticmethod
@@ -50,6 +52,14 @@ class QueryCatgory:
             WHERE id = ?
         """
 
-        result = conectionDB(query, id)
-        if result:
-            log.info(f"Category id: {id} deleted successfully")
+        conectionDB(query, id)
+
+    # filtrar por id de categoria
+    def _SQL_filterBycategory(self, id_category) -> list[tuple]:
+        query = """
+            SELECT s.id, c.name, s.site_name, s.email, s.password, s.expiry_days from categorySafe c
+            JOIN safe s ON c.id = s.id_category
+            WHERE c.id = ?
+        """
+    
+        return conectionDB(query, id_category, select=True)

@@ -1,10 +1,10 @@
 
 """Module for handling password hashing and verification using Argon2."""
 
-from argon2.exceptions import (HashingError, VerificationError, VerifyMismatchError)
-from core.Exceptions import HashCorruptionError, PasswordMismatchError
-from core.config import ARGON2_SETTING
-from core.logger import get_logger
+from argon2.exceptions import (HashingError, VerificationError, VerifyMismatchError, InvalidHashError)
+from src.core.Exceptions import HashCorruptionError, PasswordMismatchError
+from src.core.config import ARGON2_SETTING
+from src.core.logger import get_logger
 
 log = get_logger("SECURITY.HASH")
 
@@ -29,6 +29,9 @@ def hashVerify(hash: str | bytes, password: str) -> bool:
     except VerifyMismatchError:
         log.critical("A brute-force attack was detected")
         raise PasswordMismatchError("Incorrect password or possible attack")
+    except InvalidHashError as ih:
+        log.critical("The hash is invalid")
+        raise HashCorruptionError(str(ih))
     except VerificationError:
         log.critical("The hash is invalid")
         raise HashCorruptionError("The hash is invalid")

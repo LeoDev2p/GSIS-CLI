@@ -3,14 +3,17 @@
 import re
 from functools import wraps
 
-from core.Exceptions import AuthError
+from src.core.Exceptions import AuthError
 
 
 def valitacion_email(func):
     """Validates that an argument is a correctly formatted email address.
 
-    Decorator that checks if the fifth argument (index 5) or the first argument (index 0) of the decorated function is 
-    a valid email address using regular expressions.
+    Decorator that checks the email argument of the decorated function using a
+    regular expression. The email is looked up in this order:
+        - `kwargs['email']` if present (e.g. `register`)
+        - `args[4]` for `SaveSafe` style signatures (site, category, url, username, email, ...)
+        - `args[0]` for `login` (the username is the master email).
 
     Args:
         func(callable): Function to be decorated that receives an email address.
@@ -21,20 +24,34 @@ def valitacion_email(func):
     Raises:
         AuthError: If the email address is not in a valid format (code 2060).
     """
+
     @wraps(func)
     def wrappers(*args, **kwargs):
-        # Localizamos el email
-        email = args[5] if len(args) > 2 else args[0]
-        
-        if not re.findall(r"\b[a-zA-Z0-9._]+@[a-z]+\.(?:[a-z]+|[a-z]+\.[a-z]+)\b", email):
-            from security.integrity import register_failed_attempt 
+        email = kwargs.get("email")
+
+        if not isinstance(email, str):
+            # En metodos de instancia el primer argumento posicional es self
+            offset = 1 if (args and not isinstance(args[0], (str, int))) else 0
+            if len(args) > offset + 4:
+                email = args[offset + 4]
+            elif len(args) > offset:
+                email = args[offset]
+            else:
+                email = None
+
+        if not re.findall(
+            r"\b[a-zA-Z0-9._]+@[a-z]+\.(?:[a-z]+|[a-z]+\.[a-z]+)\b", str(email)
+        ):
+            from src.security.integrity import register_failed_attempt
+
             data = register_failed_attempt()
-            print (f"[DEBUG]: validation email {data}")
+            print(f"[DEBUG]: validation email {data}")
             atp = data.get("attempts", 0)
-            
+
             raise AuthError(2060, atp)
-            
+
         return func(*args, **kwargs)
+
     return wrappers
 
 

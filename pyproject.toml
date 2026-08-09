@@ -1,13 +1,11 @@
-
-[tool.ruff]
-# Longitud de línea estándar
-line-length = 120
-
-[tool.ruff.lint]
-# Selecciona las reglas: 'D' activa pydocstyle (docstrings)
-# añadir "E" (estilo) y "F" (errores lógicos) para más seguridad
-select = ["D", "E", "F"]
-
-[tool.ruff.lint.pydocstyle]
-# Configura Ruff para que use el formato de Google
-convention = "google"
+[project]
+name = "gsis-cli"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "argon2-cffi>=25.1.0",
+    "cryptography>=50.0.0",
+    "python-dotenv>=1.2.2",
+]

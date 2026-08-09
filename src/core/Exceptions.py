@@ -56,6 +56,9 @@ class AuthError(Exception):
         self.attempts = attempts
         super().__init__(self.Error())
 
+    def __str__(self):
+        return self.Error()
+
     def Error(self):
         """Return a specific error message based on the authentication error code."""
         match self.code:
@@ -65,22 +68,32 @@ class AuthError(Exception):
                 return f"Incorrect password. Failed {self.attempts}/3 attempts and the database will be deleted."
             case 2060:
                 return f"Invalid email. Failed {self.attempts}/3 attempts and the database will be deleted."
+            case 2070:
+                return f"Passwords do not match. {self.attempts}"
+            case 2080:
+                return f"No credentials found in the USB. {self.attempts}"
+            case _:
+                return str(self.attempts)
 
 
 class PasswordMismatchError(AuthError):
     """Handling errors related to a password mismatch during authentication."""
     def __init__(self, message):
-        super().__init__(message)
+        super().__init__(2050, f"Password mismatch error: {message}")
+        self.message = message
 
 
 class HashCorruptionError(AuthError):
     """Handling errors related to hash corruption during authentication."""
     def __init__(self, message):
-        super().__init__(message)
+        super().__init__(2040, f"Hash corruption error: {message}")
+        self.message = message
+
 
 class SecurityError(AuthError):
     def __init__(self, message):
-        super().__init__(message)
+        super().__init__(2090, message)
+        self.message = message
 
 # url incorrecta
 class UrlError(Exception):

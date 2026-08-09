@@ -1,12 +1,16 @@
+.opencode
+.pytest_cache
 .env
 .venv/
 venv/
 env/
 
-prueba.py
+graphify-out/
 
 db/Secure.db
 log/security.log
+storage/db/Secure.db
+storage/log/security.log
 
 **/__pycache__
 **/*.pyc

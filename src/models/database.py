@@ -1,7 +1,7 @@
 """Module responsible for handling database connections and table creations for the application."""
 
-from core import config, Exceptions
-from core.logger import get_logger
+from src.core import config, Exceptions
+from src.core.logger import get_logger
 import sqlite3
 
 log = get_logger("DATABASE")
@@ -45,7 +45,6 @@ def conectionDB(query, *args, select=False):
         log.error(f" CHECK constraint failed {sql_I}")
         raise Exceptions.RestrictionError(str(sql_I))
 
-    return True
 
 
 class CreateTable:
@@ -70,10 +69,7 @@ class CreateTable:
                 FOREIGN KEY (id_category) REFERENCES categorySafe (id) ON DELETE CASCADE		
             ) 
         """
-
-        result = conectionDB(query)
-        if result is None:
-            log.info("Safe table successfully created")
+        return conectionDB(query)
 
     @staticmethod
     def creatTablecategory():
@@ -84,7 +80,4 @@ class CreateTable:
                 name TEXT NOT NULL UNIQUE
             )
         """
-
-        result = conectionDB(query)
-        if result is None:
-            log.info("Category table successfully created")
+        return conectionDB(query)
