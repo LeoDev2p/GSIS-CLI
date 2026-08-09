@@ -3,8 +3,7 @@
 Provee banner, menús enmarcados, tablas con bordes y mensajes estilizados.
 """
 
-from src.utils.utils import lengthText
-from src.views.style import C, paint, success, error, info
+from src.views.style import C, paint, error
 
 
 def Banner():
